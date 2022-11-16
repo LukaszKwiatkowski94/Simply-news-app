@@ -30,6 +30,8 @@ class Controller
                 $params['header'] = "Main Page";
                 break;
             case 'createPost':
+                $namePage = "create";
+                $params['header'] = "Create Post";
                 break;
             default:
                 $namePage = "other";

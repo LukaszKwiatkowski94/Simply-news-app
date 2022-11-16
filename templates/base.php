@@ -13,7 +13,7 @@
     </nav>
     <header class="header">
         <h1>
-        <?php echo "{$params['header']}"; ?>
+        <?php echo "{$params['header']}" ?? ''; ?>
     </h1>
     </header>
     <main>
