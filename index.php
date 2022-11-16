@@ -1,23 +1,14 @@
 <?php
 
 declare(strict_types=1);
+
 namespace APP;
-require_once("./src/View.php");
 
-const DEFAULT_PAGE = 'main';
+require_once("./src/Controller.php");
 
-$getPage = $_GET['action'] ?? DEFAULT_PAGE;
+$request = [
+    'get' => $_GET,
+    'post' => $_POST
+];
 
-$view = new View();
-
-$params = [];
-
-if($getPage==="main"){
-    $namePage = "main";
-    $params['header'] = "Main Page";
-}else{
-    $namePage = "other";
-    $params['header'] = "Other Page";
-}
-
-$view->render($namePage,$params);
+(new Controller($request))->run();
