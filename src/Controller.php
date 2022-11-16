@@ -4,18 +4,27 @@ declare(strict_types=1);
 
 namespace APP;
 
+require_once("./src/DataBase.php");
 require_once("./src/View.php");
 
 class Controller
 {
+    private static array $configuration;
     private const DEFAULT_PAGE = 'main';
+    private DataBase $database;
     private array $request;
     private View $view;
+
+    public static function setConfiguration($configuration) : void
+    {
+        self::$configuration = $configuration;
+    }
 
     public function __construct(array $request)
     {
         $this->request = $request;
         $this->view = new View();
+        $this->database = new DataBase(self::$configuration['db']);
     }
 
     public function run() : void
@@ -30,6 +39,15 @@ class Controller
                 $params['header'] = "Main Page";
                 break;
             case 'createPost':
+                if(!empty($this->getRequestPost()))
+                {
+                    $data = $this->getRequestPost();
+                    $dataCreatePost = [
+                        'title' => $data['title'],
+                        'content' => $data['content']
+                    ];
+                    $this->database->createPost($dataCreatePost);
+                }
                 $namePage = "create";
                 $params['header'] = "Create Post";
                 break;
