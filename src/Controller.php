@@ -52,8 +52,8 @@ class Controller
                 $params['header'] = "Create Post";
                 break;
             default:
-                $namePage = "other";
-                $params['header'] = "Other Page";
+                $namePage = "pageNotFound";
+                $params['header'] = "Page Not Found";
                 break;
         }
         
