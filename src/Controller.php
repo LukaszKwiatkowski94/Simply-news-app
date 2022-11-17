@@ -37,6 +37,7 @@ class Controller
             case 'main':
                 $namePage = "main";
                 $params['header'] = "Main Page";
+                $params['posts'] = $this->database->getPosts();
                 break;
             case 'createPost':
                 if(!empty($this->getRequestPost()))
@@ -50,6 +51,12 @@ class Controller
                 }
                 $namePage = "create";
                 $params['header'] = "Create Post";
+                break;
+            case 'post':
+                $namePage = "post";
+                $idPost = ($this->getRequestGet());
+                $params['header'] = ($this->database->getPost((int)$idPost['id']))['title'];
+                $params['post'] = $this->database->getPost((int)$idPost['id']);
                 break;
             default:
                 $namePage = "pageNotFound";

@@ -28,4 +28,20 @@ class DataBase
         VALUES($title,$content,$author,'$date_created',$active)";
         $result = $this->connection->exec($query);
     }
+
+    public function getPosts(): array
+    {
+        $query = 'SELECT * FROM news';
+        $posts = $this->connection->query($query);
+        $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
+        return $posts;
+    }
+
+    public function getPost(int $id)
+    {
+        $query = "SELECT * FROM news WHERE id=$id";
+        $post = $this->connection->query($query);
+        $result = $post->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
