@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace APP;
+require_once __DIR__ . '/vendor/autoload.php';
 
-require_once("./src/Controller.php");
+use APP\Controllers\NewsController;
+use APP\Models\AbstractModel;
+use APP\Request;
+
 $configuration = require_once("./config/config.php");
 
-$request = [
-    'get' => $_GET,
-    'post' => $_POST
-];
+$request = new Request($_GET,$_POST);
 
-Controller::setConfiguration($configuration);
-(new Controller($request))->run();
+AbstractModel::configuration($configuration);
+(new NewsController($request))->run();

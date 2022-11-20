@@ -2,21 +2,14 @@
 
 declare(strict_types=1);
 
-namespace APP;
+namespace APP\Models;
 
+use APP\Models\AbstractModel;
 use PDO;
 
-class DataBase
+class NewsModel extends AbstractModel
 {
-    private PDO $connection;
-
-    public function __construct(array $config)
-    {
-        $dsn = "mysql:host={$config['host']};dbname={$config['database']};port={$config['port']}";
-        $this->connection = new PDO($dsn, $config['user'], $config['password']);
-    }
-
-    public function createPost(array $data): void
+    public function createNews(array $data): void
     {
         $title = $this->connection->quote($data['title']);
         $content = $this->connection->quote($data['content']);
@@ -29,7 +22,7 @@ class DataBase
         $result = $this->connection->exec($query);
     }
 
-    public function getPosts(): array
+    public function getNews(): array
     {
         $query = 'SELECT * FROM news';
         $posts = $this->connection->query($query);
@@ -37,7 +30,7 @@ class DataBase
         return $posts;
     }
 
-    public function getPost(int $id)
+    public function getSingleNews(int $id)
     {
         $query = "SELECT * FROM news WHERE id=$id";
         $post = $this->connection->query($query);

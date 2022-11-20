@@ -10,5 +10,8 @@
             "name": "LukaszKwiatkowski94"
         }
     ],
-    "require": {}
+    "require": {},
+    "scripts": {
+        "run-server":"php -S localhost:8800"
+    }
 }

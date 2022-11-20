@@ -4,6 +4,6 @@ This is main page<br>
         <div class="posts__header"><?php echo $post['title'] ?></div>
         <div class="posts__short-content"><?php echo $post['content'] ?></div>
         <div class="posts__date-created"><?php echo $post['date_created'] ?></div>
-        <a href="?action=post&id=<?php echo $post['id']; ?>">Read more</a>
+        <a href="?action=show&id=<?php echo $post['id']; ?>">Read more</a>
     </div>
 <?php endforeach; ?>

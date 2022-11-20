@@ -7,7 +7,9 @@ return [
         'host' => 'localhost',
         'port' => '3306',
         'database' => 'simply_news',
-        'user' => 'news_user',
-        'password' => '@PFiW2mmOzK(g!h['
+        // 'user' => 'news_user',
+        // 'password' => '@PFiW2mmOzK(g!h['
+        'user' => 'root',
+        'password' => ''
     ]  
 ];
