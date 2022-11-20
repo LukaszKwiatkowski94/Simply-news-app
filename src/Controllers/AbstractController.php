@@ -30,6 +30,8 @@ abstract class AbstractController
     public function run(): void
     {
         $requestPage = $this->getPage();
+        if (!method_exists($this, $requestPage))
+            $requestPage = 'pageNotFound';
         $this->$requestPage();
     }
 
@@ -37,5 +39,12 @@ abstract class AbstractController
     {
         $myGet = $this->request->getRequestGet();
         return $myGet['action'] ?? self::DEFAULT_PAGE;
+    }
+
+    private function pageNotFound(): void
+    {
+        $namePage = "pageNotFound";
+        $params['header'] = "Page Not Found";
+        $this->view->render($namePage,$params);
     }
 }
