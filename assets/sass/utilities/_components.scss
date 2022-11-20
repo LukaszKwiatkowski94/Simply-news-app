@@ -1,0 +1,23 @@
+@use "colors" as *;
+
+input{
+    padding: 0.2em 0.5em;
+    border-radius: 1em;
+    font-size: 1.8rem;
+    &:focus{
+        border: 1px solid $second-color;
+    }
+}
+
+textarea{
+    padding: 0.2em 0.5em;
+    border-radius: 1em;
+    resize: vertical;
+}
+
+.btn{
+    padding: 0.5em 1em;
+    border-color: $second-color;
+    text-align: center;
+    color: $winter-color;
+}
