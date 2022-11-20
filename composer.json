@@ -1,0 +1,14 @@
+{
+    "name": "lukik/simply-news-app",
+    "autoload": {
+        "psr-4": {
+            "APP\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "LukaszKwiatkowski94"
+        }
+    ],
+    "require": {}
+}
