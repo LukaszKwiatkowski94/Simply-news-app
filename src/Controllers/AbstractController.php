@@ -38,7 +38,7 @@ abstract class AbstractController
     protected function getPage() : string
     {
         $myGet = $this->request->getRequestGet();
-        return $myGet['action'] ?? self::DEFAULT_PAGE;
+        return $myGet['page'] ?? self::DEFAULT_PAGE;
     }
 
     private function pageNotFound(): void

@@ -11,7 +11,7 @@
 		/>
 		<p class="news-list__content"><?php echo $post['content'] ?></p>
 		<p class="news-list__created"><?php echo $post['date_created'] ?></p>
-		<a class="news-list__link" href="?action=show&id=<?php echo $post['id']; ?>"
+		<a class="news-list__link" href="?page=show&id=<?php echo $post['id']; ?>"
 			>Read more</a
 		>
 	</div>

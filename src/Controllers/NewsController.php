@@ -27,26 +27,26 @@ class NewsController extends AbstractController
 
     public function create(): void
     {
-        if(!empty($this->request->getRequestGet()))
+        if(!empty($this->request->getRequestPost()))
         {
-            $data = $this->request->getRequestGet();
-            $dataCreatePost = [
+            $data = $this->request->getRequestPost();
+            $dataCreateNews = [
                 'title' => $data['title'],
                 'content' => $data['content']
             ];
-            $this->model->createNews($dataCreatePost);
+            $this->model->createNews($dataCreateNews);
         }
         $namePage = "create";
-        $params['header'] = "Create Post";
+        $params['header'] = "Create News";
         $this->view->render($namePage,$params);
     }
 
     public function show(): void
     {
-        $namePage = "post";
-        $idPost = ($this->request->getRequestGet());
-        $params['header'] = ($this->model->getSingleNews((int)$idPost['id']))['title'];
-        $params['post'] = $this->model->getSingleNews((int)$idPost['id']);
+        $namePage = "show";
+        $idNews = ($this->request->getRequestGet());
+        $params['header'] = ($this->model->getSingleNews((int)$idNews['id']))['title'];
+        $params['post'] = $this->model->getSingleNews((int)$idNews['id']);
         $this->view->render($namePage,$params);
     }
 }
