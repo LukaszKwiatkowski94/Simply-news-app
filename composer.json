@@ -10,7 +10,9 @@
             "name": "LukaszKwiatkowski94"
         }
     ],
-    "require": {},
+    "require": {
+        "klein/klein": "^2.1"
+    },
     "scripts": {
         "run-server":"php -S localhost:8800"
     }
