@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace APP\Controllers;
 
 use APP\Controllers\AbstractController;
+use APP\Exception\NewsException;
+use APP\Exception\PermissionException;
 use APP\Models\NewsModel;
 
 class NewsController extends AbstractController
@@ -27,6 +29,9 @@ class NewsController extends AbstractController
 
     public function create(): void
     {
+        if($_SESSION['user']['is_admin'] == 0){
+            throw new PermissionException("You don't have permissions. | Please contact your administrator.",400);
+        }
         if(!empty($this->request->getRequestPost()))
         {
             $data = $this->request->getRequestPost();
@@ -47,6 +52,10 @@ class NewsController extends AbstractController
         $idNews = ($this->request->getRequestGet());
         $params['header'] = ($this->model->getSingleNews((int)$idNews['id']))['title'];
         $params['post'] = $this->model->getSingleNews((int)$idNews['id']);
+        if(empty($params['post']))
+        {
+            throw new NewsException('The requested news does not exist.',400);
+        }
         $this->view->render($namePage,$params);
     }
 }

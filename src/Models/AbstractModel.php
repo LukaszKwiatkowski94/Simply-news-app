@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace APP\Models;
 
+use APP\Exception\DataBaseException;
+use Exception;
 use PDO;
 
 abstract class AbstractModel
@@ -19,7 +21,14 @@ abstract class AbstractModel
 
     public function __construct()
     {
-        $dsn = 'mysql:host='.self::$configuration['host'].';dbname='.self::$configuration['database'].';port='.self::$configuration['port'];
-        $this->connection = new PDO($dsn, self::$configuration['user'], self::$configuration['password']);
+        try
+        {
+            $dsn = 'mysql:host='.self::$configuration['host'].';dbname='.self::$configuration['database'].';port='.self::$configuration['port'];
+            $this->connection = new PDO($dsn, self::$configuration['user'], self::$configuration['password']);
+        }
+        catch(Exception)
+        {
+            throw new DataBaseException("Database connection problem detected.",400);
+        }
     }
 }
