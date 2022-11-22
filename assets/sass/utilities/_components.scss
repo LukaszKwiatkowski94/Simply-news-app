@@ -4,6 +4,7 @@ form
 {
     display: flex;
     flex-direction: column;
+    row-gap: 1em;
 }
 
 input{
@@ -21,9 +22,16 @@ textarea{
     resize: vertical;
 }
 
+label{
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
 .btn{
-    padding: 0.5em 1em;
-    border-color: $second-color;
+    margin-top: 2em;
+    padding: 1em 2em;
+    background-color: $main-color;
+    border-radius: 1em;
     text-align: center;
     color: $winter-color;
 }

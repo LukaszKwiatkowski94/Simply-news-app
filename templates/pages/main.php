@@ -2,7 +2,12 @@
 	<h2 class="section__header">News list</h2>
 	<?php foreach($params['posts'] as $post): ?>
 	<div class="news-list__single">
-		<h3 class="news-list__header"><?php echo $post['title'] ?></h3>
+		<h3 class="news-list__header">
+			<a href="/news-show/<?php echo $post['id']; ?>"
+				><?php echo $post['title'] ?></a
+			>
+			
+		</h3>
 		<img
 			class="news-list__img"
 			src="./public/img/news_img.jpg"

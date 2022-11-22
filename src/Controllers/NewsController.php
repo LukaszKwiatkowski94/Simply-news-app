@@ -41,6 +41,7 @@ class NewsController extends AbstractController
                 'content' => $data['content']
             ];
             $this->model->createNews($dataCreateNews);
+            self::$response->redirect('/news-list')->send();
         }
         $namePage = "create";
         $params['header'] = "Create News";
@@ -66,7 +67,7 @@ class NewsController extends AbstractController
             throw new PermissionException("You don't have permissions. | Please contact your administrator.",400);
         }
         $namePage = "list";
-        $params['header'] = "Main Page";
+        $params['header'] = "News List";
         $params['news'] = $this->model->getListNews();
         $this->view->render($namePage,$params);
     }
