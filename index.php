@@ -40,6 +40,20 @@ try
         AbstractController::$myPage = 'create';
         (new NewsController($request))->run();
     });
+
+    $klein->respond('GET', '/news-list', function () {
+        $request = new Request($_GET,$_POST);
+        AbstractController::$myPage = 'list';
+        (new NewsController($request))->run();
+    });
+
+    $klein->respond('GET', '/news-delete/[:id]', function ($req, $response) {
+        $_GET['id'] = $req->id;
+        $request = new Request($_GET,$_POST);
+        AbstractController::$myPage = 'delete';
+        AbstractController::$response = $response;
+        (new NewsController($request))->run();
+    });
     
     // USER
     

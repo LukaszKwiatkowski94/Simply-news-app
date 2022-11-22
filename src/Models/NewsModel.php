@@ -17,7 +17,7 @@ class NewsModel extends AbstractModel
         {
             $title = $this->connection->quote($data['title']);
             $content = $this->connection->quote($data['content']);
-            $author = 1;
+            $author = $_SESSION['user']['id'];
             $date_created = date('Y-m-d H:i:s');
             $active = true;
             $query = "INSERT INTO 
@@ -46,9 +46,25 @@ class NewsModel extends AbstractModel
         }
     }
 
+    public function getListNews(): array
+    {
+        try
+        {
+            $query = "SELECT id, title, date_created, active FROM news ORDER BY id desc";
+            $posts = $this->connection->query($query);
+            $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
+            return $posts;
+        }
+        catch(Exception)
+        {
+            throw new NewsException('Failed to get news list for admin. | Database error.',400);
+        }
+    }
+
     public function getSingleNews(int $id)
     {
-        try{
+        try
+        {
             $query = "SELECT id, title, content, date_created, author FROM news WHERE id=$id";
             $post = $this->connection->query($query);
             $result = $post->fetch(PDO::FETCH_ASSOC);
@@ -57,6 +73,19 @@ class NewsModel extends AbstractModel
         catch(Exception)
         {
             throw new NewsException('Failed to get news. | Database error.',400);
+        }
+    }
+
+    public function delete(int $id):void
+    {
+        try
+        {
+            $query = "DELETE FROM news where id=$id";
+            $this->connection->exec($query);
+        }
+        catch(Exception)
+        {
+            throw new NewsException('Failed to delete news. | Database error.',400);
         }
     }
 }

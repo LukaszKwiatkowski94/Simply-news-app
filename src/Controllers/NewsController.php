@@ -8,6 +8,7 @@ use APP\Controllers\AbstractController;
 use APP\Exception\NewsException;
 use APP\Exception\PermissionException;
 use APP\Models\NewsModel;
+use Exception;
 
 class NewsController extends AbstractController
 {
@@ -57,5 +58,33 @@ class NewsController extends AbstractController
             throw new NewsException('The requested news does not exist.',400);
         }
         $this->view->render($namePage,$params);
+    }
+
+    public function list(): void
+    {
+        if($_SESSION['user']['is_admin'] == 0){
+            throw new PermissionException("You don't have permissions. | Please contact your administrator.",400);
+        }
+        $namePage = "list";
+        $params['header'] = "Main Page";
+        $params['news'] = $this->model->getListNews();
+        $this->view->render($namePage,$params);
+    }
+
+    public function delete(): void
+    {
+        try
+        {
+            if($_SESSION['user']['is_admin'] == 0){
+                throw new PermissionException("You don't have permissions. | Please contact your administrator.",400);
+            }
+            $idNews = ($this->request->getRequestGet());
+            $this->model->delete((int)$idNews['id']);
+            self::$response->redirect('/news-list')->send();
+        }
+        catch(Exception)
+        {
+            throw new NewsException('Error deleting news',400);
+        }
     }
 }
