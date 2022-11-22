@@ -87,4 +87,39 @@ class NewsController extends AbstractController
             throw new NewsException('Error deleting news',400);
         }
     }
+
+    public function edit():void
+    {
+        try
+        {
+            if($_SESSION['user']['is_admin'] == 0){
+                throw new PermissionException("You don't have permissions. | Please contact your administrator.",400);
+            }
+            if(!empty($this->request->getRequestPost()))
+            {
+                $data = $this->request->getRequestPost();
+                $dataCreateNews = [
+                    'id' => $data['id'],
+                    'title' => $data['title'],
+                    'content' => $data['content'],
+                    'active' => $data['active']
+                ];
+                $this->model->edit($dataCreateNews);
+                self::$response->redirect('/news-list')->send();
+            }
+            $namePage = "edit";
+            $idNews = ($this->request->getRequestGet());
+            $params['header'] = 'Edit News';
+            $params['news'] = $this->model->getSingleNews((int)$idNews['id']);
+            if(empty($params['news']))
+            {
+                throw new NewsException('The requested news does not exist.',400);
+            }
+            $this->view->render($namePage,$params);
+        }
+        catch(Exception $e)
+        {
+            throw new NewsException("News editing error - $e",400);
+        }
+    }
 }

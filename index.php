@@ -54,6 +54,14 @@ try
         AbstractController::$response = $response;
         (new NewsController($request))->run();
     });
+
+    $klein->respond(array('GET','POST'), '/news-edit/[:id]', function ($req, $response) {
+        $_GET['id'] = $req->id;
+        $request = new Request($_GET,$_POST);
+        AbstractController::$myPage = 'edit';
+        AbstractController::$response = $response;
+        (new NewsController($request))->run();
+    });
     
     // USER
     

@@ -21,9 +21,10 @@
                 echo 'Inactive';
             } ?></th>
                 <th><?php echo $news['date_created'] ?></th>
-                <th></th>
+                <th><?php echo $news['date_last_updated'] ?></th>
                 <th>
                     <a class="news-list-admin__link" href="/news-show/<?php echo $news['id']; ?>">Go to news</a>
+                    <a class="news-list-admin__link" href="/news-edit/<?php echo $news['id']; ?>">Edit</a>
                     <a class="news-list-admin__link" href="/news-delete/<?php echo $news['id']; ?>">Delete</a>
                 </th>
             </tr>
