@@ -35,7 +35,7 @@ try
         (new NewsController($request))->run();
     });
     
-    $klein->respond('GET', '/news-create', function () {
+    $klein->respond(array('GET','POST'), '/news-create', function () {
         $request = new Request($_GET,$_POST);
         AbstractController::$myPage = 'create';
         (new NewsController($request))->run();

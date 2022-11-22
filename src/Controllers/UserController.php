@@ -60,7 +60,6 @@ class UserController extends AbstractController
         if(!empty($this->request->getRequestPost()) && empty($_SESSION['user']))
         {
             $data = $this->request->getRequestPost();
-            var_dump($data);
             $userValidationStatus = $this->model->create($data);
             if($userValidationStatus)
             {

@@ -17,10 +17,10 @@ class UserModel extends AbstractModel{
         try
         {
             $username = $this->connection->quote($data['username']);
-            $password = $this->connection->quote($data['password']);
+            $password = $this->connection->quote(password_hash($data['password'],PASSWORD_DEFAULT));
             $name = $this->connection->quote($data['name']);
             $surname = $this->connection->quote($data['surname']);
-            if($username = '' || $password = '' || $name = '' || $surname = '')
+            if($username == '' || $password == '' || $name == '' || $surname == '')
             {
                 throw new UserException("Incomplete user creation data. | Database error.",400);
             }
@@ -39,12 +39,27 @@ class UserModel extends AbstractModel{
         try
         {
             $username = $this->connection->quote($data['username']);
-            $password = $this->connection->quote($data['password']);
+            $password = $data['password'];
             $query = "SELECT * 
                     FROM users 
-                    WHERE username = $username AND password = $password";
+                    WHERE username = $username";
             $user = $this->connection->query($query);
-            return $user->fetch(PDO::FETCH_ASSOC) ?? [];
+            $getUser = $user->fetch(PDO::FETCH_ASSOC) ?? [];
+            if (isset($getUser))
+            {
+                if (password_verify($password, $getUser['password']))
+                {
+                    return $getUser;
+                }
+                else
+                {
+                    return [];
+                }
+            }
+            else
+            {
+                return [];
+            } 
         }
         catch(Exception)
         {
