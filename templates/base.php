@@ -49,6 +49,6 @@
                 ?>
 			</main>
 		</div>
-		<footer class="footer">This is Footer</footer>
+		<footer class="footer"><p>Simply News App</p></footer>
 	</body>
 </html>
