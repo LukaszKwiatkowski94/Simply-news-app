@@ -1,41 +1,91 @@
+@use "../utilities/colors" as *;
 @media (min-width: 768px) {
-    .header{
-        &__title {
-            font-size: 6.4rem;
-        }
-    }
+	.header {
+		&__title {
+			font-size: 6.4rem;
+		}
+	}
 
-    .news-list {
-        &__single {
-            display: grid;
-            grid-template-rows: 4em 3fr 3em;
-            grid-template-columns: 2fr 4fr;
-        }
-    
-        &__header {
-            grid-row: 1/2;
-            grid-column: 1/-1;
-            font-size: 2.8rem;
-        }
-    
-        &__img {
-            grid-row: 2/3;
-            grid-column: 1/2;
-        }
-    
-        &__content {
-            grid-row: 2/3;
-            grid-column: 2/3;
-        }
-    
-        &__created {
-            grid-row: 3/4;
-            grid-column: 1/2;
-        }
-    
-        &__link {
-            grid-row: 3/4;
-            grid-column: 2/3;
-        }
-    }
+	.news-list {
+		&__single {
+			display: grid;
+			grid-template-rows: 4em 3fr 3em;
+			grid-template-columns: 2fr 4fr;
+		}
+
+		&__header {
+			grid-row: 1/2;
+			grid-column: 1/-1;
+			font-size: 2.8rem;
+		}
+
+		&__img {
+			grid-row: 2/3;
+			grid-column: 1/2;
+		}
+
+		&__content {
+			grid-row: 2/3;
+			grid-column: 2/3;
+		}
+
+		&__created {
+			grid-row: 3/4;
+			grid-column: 1/2;
+		}
+
+		&__link {
+			grid-row: 3/4;
+			grid-column: 2/3;
+		}
+	}
+
+	.nav {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+        height: 4em;
+
+		&__logo {
+            display: flex;
+			justify-self: flex-start;
+            align-items: center;
+			margin-right: auto;
+
+            &-text{
+                font-size: 2rem;
+                color: $winter-color;
+            }
+		}
+
+		&__list {
+			display: flex;
+			align-items: stretch;
+			margin: 0 1em;
+            height: 100%;
+		}
+
+		&__item {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0.2em 0.5em;
+            height: 100%;
+			font-size: 1.8rem;
+            transition: background-color 1s;
+
+            &:hover{
+                background-color: $winter-color;
+                a{
+                    color: $main-color;
+                }
+            }
+
+			&-link {
+                text-transform: uppercase;
+                text-decoration: none;
+                transition: color 1s;
+			}
+		}
+	}
 }

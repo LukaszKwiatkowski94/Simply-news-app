@@ -1,17 +1,22 @@
 {
-    "name": "lukik/simply-news-app",
-    "autoload": {
-        "psr-4": {
-            "APP\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "LukaszKwiatkowski94"
-        }
-    ],
-    "require": {},
-    "scripts": {
-        "run-server":"php -S localhost:8800"
-    }
+	"name": "lukik/simply-news-app",
+	"autoload": {
+		"psr-4": {
+			"APP\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "LukaszKwiatkowski94"
+		}
+	],
+	"require": {
+		"klein/klein": "^2.1"
+	},
+	"scripts": {
+		"run-server": "php -S localhost:8800"
+	},
+	"config": {
+		"process-timeout": 0
+	}
 }

@@ -10,8 +10,10 @@ use APP\View;
 
 abstract class AbstractController
 {
-    private static array $configuration;
     protected const DEFAULT_PAGE = 'mainPage';
+    private static array $configuration;
+    public static string $myPage;
+    public static $response;
     protected Request $request;
     protected View $view;
 
@@ -37,8 +39,7 @@ abstract class AbstractController
 
     protected function getPage() : string
     {
-        $myGet = $this->request->getRequestGet();
-        return $myGet['action'] ?? self::DEFAULT_PAGE;
+        return self::$myPage ?? self::DEFAULT_PAGE;
     }
 
     private function pageNotFound(): void

@@ -1,7 +1,8 @@
 <section class="section news-creation">
-	<h2 class="section__header">Creation new news</h2>
-	<form action="?action=createPost" class="news-creation__form" method="post">
-		<input class="news-creation__title" type="text" name="title" id="" />
+	<form action="/news-create" class="news-creation__form" method="post">
+		<label for="title">News title</label>
+		<input class="news-creation__title" type="text" name="title" id="title" />
+		<label for="title">News content</label>
 		<textarea
 			class="news-creation__content"
 			name="content"
@@ -9,6 +10,6 @@
 			cols="30"
 			rows="10"
 		></textarea>
-		<button class="btn" type="submit">Add/edit</button>
+		<button class="btn" type="submit">Create</button>
 	</form>
 </section>
