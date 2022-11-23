@@ -41,37 +41,23 @@
 	}
 
 	.nav {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-        height: 4em;
-
-		&__logo {
-            display: flex;
-			justify-self: flex-start;
-            align-items: center;
-			margin-right: auto;
-
-            &-text{
-                font-size: 2rem;
-                color: $winter-color;
-            }
-		}
+	
+		
 
 		&__list {
+			position: relative;
 			display: flex;
+			flex-direction: row;
 			align-items: stretch;
 			margin: 0 1em;
             height: 100%;
 		}
 
+		&__btn{
+			display: none;
+		}
+
 		&__item {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 0.2em 0.5em;
-            height: 100%;
-			font-size: 1.8rem;
             transition: background-color 1s;
 
             &:hover{
@@ -82,8 +68,6 @@
             }
 
 			&-link {
-                text-transform: uppercase;
-                text-decoration: none;
                 transition: color 1s;
 			}
 		}

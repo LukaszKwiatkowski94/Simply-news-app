@@ -13,7 +13,10 @@
 				<img src="./../public/icon/book.svg" alt="book" class="nav__logo" />
 				<p class="nav__logo-text">News</p>
 			</div>
-			<div class="nav__list">
+			<button class="nav__btn">
+				<img src="./../public/icon/menu.svg" alt="menu" class="nav__btn-burger" />
+			</button>
+			<div class="nav__list nav__list--mobile">
 				<div class="nav__item">
 					<a href="/" class="nav__item-link">Home</a>
 				</div>
@@ -50,5 +53,6 @@
 			</main>
 		</div>
 		<footer class="footer"><p>Simply News App</p></footer>
+		<script src=".././public/js/openMenu.min.js"></script>
 	</body>
 </html>
