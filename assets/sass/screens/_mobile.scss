@@ -99,7 +99,7 @@
 .news-list {
 	&__single {
 		display: grid;
-		grid-template-rows: 1fr 1fr 2fr 3em 3em;
+		grid-template-rows: 6em 0.5fr 1fr 3em 3em;
 		grid-template-columns: 1fr;
 		gap: 0;
 		margin-bottom: 0.5em;
@@ -123,6 +123,7 @@
 	&__img {
 		grid-row: 2/3;
 		grid-column: 1/-1;
+		align-self: center;
 	}
 
 	img {

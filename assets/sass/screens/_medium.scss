@@ -9,7 +9,7 @@
 	.news-list {
 		&__single {
 			display: grid;
-			grid-template-rows: 4em 3fr 3em;
+			grid-template-rows: 6em 3fr 3em;
 			grid-template-columns: 2fr 4fr;
 		}
 
@@ -42,8 +42,6 @@
 
 	.nav {
 	
-		
-
 		&__list {
 			position: relative;
 			display: flex;
