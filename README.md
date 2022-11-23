@@ -81,3 +81,8 @@ ALTER TABLE `users`
 5. Get an administrator
 -> Create a user in the app using a form.
 -> Change the value in the table "users" column "is_admin" from "0" to "1" for the user you want to become an administrator.
+
+## Access to the Database
+-> Go to the config directory.
+-> Open the config.php file.
+-> Change the database connection settings and save.
