@@ -25,7 +25,7 @@ class NewsModel extends AbstractModel
             VALUES($title,$content,$author,'$date_created',$active)";
             $result = $this->connection->exec($query);
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException('Failed to create news. | Database error.',400);
         }
@@ -40,7 +40,7 @@ class NewsModel extends AbstractModel
             $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
             return $posts;
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException('Failed to get news list. | Database error.',400);
         }
@@ -55,7 +55,7 @@ class NewsModel extends AbstractModel
             $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
             return $posts;
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException('Failed to get news list for admin. | Database error.',400);
         }
@@ -70,7 +70,7 @@ class NewsModel extends AbstractModel
             $result = $post->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException('Failed to get news. | Database error.',400);
         }
@@ -83,7 +83,7 @@ class NewsModel extends AbstractModel
             $query = "DELETE FROM news where id=$id";
             $this->connection->exec($query);
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException('Failed to delete news. | Database error.',400);
         }
@@ -106,7 +106,7 @@ class NewsModel extends AbstractModel
                       WHERE id=$id";
             $result = $this->connection->exec($query);
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new NewsException("Failed to edit news. | Database error.",400);
         }

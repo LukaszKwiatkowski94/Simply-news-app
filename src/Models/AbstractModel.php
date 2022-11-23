@@ -26,7 +26,7 @@ abstract class AbstractModel
             $dsn = 'mysql:host='.self::$configuration['host'].';dbname='.self::$configuration['database'].';port='.self::$configuration['port'];
             $this->connection = new PDO($dsn, self::$configuration['user'], self::$configuration['password']);
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new DataBaseException("Database connection problem detected.",400);
         }

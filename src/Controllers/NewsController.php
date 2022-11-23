@@ -83,7 +83,7 @@ class NewsController extends AbstractController
             $this->model->delete((int)$idNews['id']);
             self::$response->redirect('/news-list')->send();
         }
-        catch(Exception)
+        catch(Exception  $e)
         {
             throw new NewsException('Error deleting news',400);
         }
@@ -120,7 +120,7 @@ class NewsController extends AbstractController
         }
         catch(Exception $e)
         {
-            throw new NewsException("News editing error - $e",400);
+            throw new NewsException("News editing error",400);
         }
     }
 }

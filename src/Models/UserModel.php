@@ -28,7 +28,7 @@ class UserModel extends AbstractModel{
             $result = $this->connection->exec($query);
             return $result;
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new UserException("User creation error. | Database error.",400);
         }
@@ -61,7 +61,7 @@ class UserModel extends AbstractModel{
                 return [];
             } 
         }
-        catch(Exception)
+        catch(Exception $e)
         {
             throw new UserException("Error while logging in. Check the correctness of the data and log in again. | DataBase Error",400);
         }
