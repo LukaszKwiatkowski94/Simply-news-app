@@ -1,5 +1,8 @@
 # Simply News App
 
+A simple application based on PHP 7.4 which is designed to display news. The user with the administrator role is responsible for adding news. Anyone can create a regular user account. Comment functionality will be added soon. The application implements the "klein/klein.php" library, which is responsible for routing.
+
+
 ## Installation
 
 1. Clone Repo
