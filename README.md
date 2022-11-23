@@ -78,11 +78,11 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT
 ```
 
-5. Get an administrator
--> Create a user in the app using a form.
--> Change the value in the table "users" column "is_admin" from "0" to "1" for the user you want to become an administrator.
+5. Access to the Database
+- Go to the config directory.
+- Open the config.php file.
+- Change the database connection settings and save.
 
-## Access to the Database
--> Go to the config directory.
--> Open the config.php file.
--> Change the database connection settings and save.
+6. Get an administrator
+- Create a user in the app using a form.
+- Change the value in the table "users" column "is_admin" from "0" to "1" for the user you want to become an administrator.
