@@ -15,12 +15,13 @@ class CommentsModel extends AbstractModel
     {
         try
         {
-            $author = $this->connection->quote($data['author']);
+            $author = $this->connection->quote($data['authorID']);
             $content = $this->connection->quote($data['content']);
+            $idNews = $this->connection->quote($data['newsID']);
             $date_created = date('Y-m-d H:i:s');
             $query = "INSERT INTO 
-            comments(author,content,date_created)
-            VALUES($author,$content,$date_created)";
+            comments(newsID, authorID, content, date_created)
+            VALUES($idNews ,$author,$content,'$date_created')";
             $result = $this->connection->exec($query);
         }
         catch(Exception $e)
@@ -33,9 +34,10 @@ class CommentsModel extends AbstractModel
     {
         try
         {
-            $query = "SELECT author, content, date_created FROM comments WHERE newsID=$id";
+            $query = "SELECT authorID, content, date_created FROM comments WHERE newsID=$id";
             $comments = $this->connection->query($query);
-            return $comments->fetchAll(PDO::FETCH_ASSOC) ?? [];
+            $comments = $comments->fetchAll(PDO::FETCH_ASSOC) ?? [];
+            return $comments;
         }
         catch(Exception $e)
         {

@@ -93,11 +93,13 @@ try
     $klein->respond('GET', '/comments-news/[:id]', function ($req, $response) {
         $_GET['id'] = $req->id;
         $request = new Request($_GET,$_POST);
+        AbstractController::$myPage = 'getComments';
         (new CommentsController($request))->run();
     });
 
     $klein->respond('POST', '/comments-create', function ($req, $response) {
         $request = new Request($_GET,$_POST);
+        AbstractController::$myPage = 'createComment';
         (new CommentsController($request))->run();
     });
     
