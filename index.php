@@ -7,6 +7,7 @@ session_start();
 require_once __DIR__ . '/vendor/autoload.php';
 
 use APP\Controllers\AbstractController;
+use APP\Controllers\CommentsController;
 use APP\Controllers\ErrorController;
 use APP\Controllers\NewsController;
 use APP\Controllers\UserController;
@@ -85,6 +86,19 @@ try
         AbstractController::$myPage = 'logout';
         AbstractController::$response = $response;
         (new UserController($request))->run();
+    });
+
+    // COMMENTS
+
+    $klein->respond('GET', '/comments-news/[:id]', function ($req, $response) {
+        $_GET['id'] = $req->id;
+        $request = new Request($_GET,$_POST);
+        (new CommentsController($request))->run();
+    });
+
+    $klein->respond('POST', '/comments-create', function ($req, $response) {
+        $request = new Request($_GET,$_POST);
+        (new CommentsController($request))->run();
     });
     
     // ERROR
