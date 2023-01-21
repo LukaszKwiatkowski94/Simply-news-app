@@ -1,9 +1,9 @@
 @media (min-width: 992px) {
-	.header {
-		background-image: url("./../img/header_big.jpg");
-	}
+    .header{
+        background-image: url('./../img/header_big.jpg');
+    }
 
-	.comments {
+    .comments {
 		margin: 1em auto;
 		&__single {
 			grid-template-rows: 1.5fr 0.8fr;
