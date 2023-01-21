@@ -98,6 +98,9 @@ try
     });
 
     $klein->respond('POST', '/comments-create', function ($req, $response) {
+        $body = json_decode(file_get_contents('php://input'));
+        $_POST['news'] = $body->news;
+        $_POST['content'] = $body->content;
         $request = new Request($_GET,$_POST);
         AbstractController::$myPage = 'createComment';
         (new CommentsController($request))->run();

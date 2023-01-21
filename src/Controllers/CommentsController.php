@@ -42,7 +42,7 @@ class CommentsController extends AbstractController
         {
             $data = $this->request->getRequestPost();
             $dataComment = [
-                'authorID' => $data['author'],
+                'authorID' => (string)$_SESSION['user']['id'],
                 'newsID' => $data['news'],
                 'content' => $data['content']
             ];
