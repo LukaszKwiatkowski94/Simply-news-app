@@ -28,7 +28,7 @@ class CommentsController extends AbstractController
             $comments = $this->model->getCommentsForNews((int)$id);
             header("Content-Type: application/json");
             echo json_encode($comments);
-            exit();
+            // exit();
         }
         catch(Exception $e)
         {
@@ -42,7 +42,7 @@ class CommentsController extends AbstractController
         {
             $data = $this->request->getRequestPost();
             $dataComment = [
-                'authorID' => $data['author'],
+                'authorID' => (string)$_SESSION['user']['id'],
                 'newsID' => $data['news'],
                 'content' => $data['content']
             ];
