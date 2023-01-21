@@ -28,7 +28,7 @@ class CommentsController extends AbstractController
             $comments = $this->model->getCommentsForNews((int)$id);
             header("Content-Type: application/json");
             echo json_encode($comments);
-            exit();
+            // exit();
         }
         catch(Exception $e)
         {

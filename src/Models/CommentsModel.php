@@ -34,7 +34,9 @@ class CommentsModel extends AbstractModel
     {
         try
         {
-            $query = "SELECT authorID, content, date_created FROM comments WHERE newsID=$id";
+            $query = "SELECT u.username as author, c.content, c.date_created 
+                    FROM comments c JOIN users u ON c.authorID = u.id
+                    WHERE newsID=$id";
             $comments = $this->connection->query($query);
             $comments = $comments->fetchAll(PDO::FETCH_ASSOC) ?? [];
             return $comments;
