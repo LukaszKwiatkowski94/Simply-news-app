@@ -15,10 +15,11 @@ echo $params['post']['content'];
 <div class="alert">
 	<!-- This if for alert -->
 </div>
-<section id="comments">
+<section id="comments" class="comments">
 	<?php
 		if(isset($_SESSION['user'])) { ?>
 	<form id="myForm" action="javascript:void(0);">
+		<h3 class="comments__header">Add your comment:</h3>
 		<textarea
 			name="content"
 			id="contentComment"
@@ -26,8 +27,9 @@ echo $params['post']['content'];
 			cols="30"
 			rows="10"
 		></textarea>
-		<button id="AddComment">Add comment</button>
+		<button class="btn" id="AddComment">Add comment</button>
 	</form>
+	
 	<script src=".././public/js/createComment.min.js"></script>
 	<?php
 		}

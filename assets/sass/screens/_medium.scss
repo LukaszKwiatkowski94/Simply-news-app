@@ -70,4 +70,21 @@
 			}
 		}
 	}
+
+	.comments {
+		margin: 1em auto;
+		&__single {
+			padding: 0.4em;
+			font-size: 2.2rem;
+		}
+		&__author {
+			padding: 0.6em;
+		}
+		&__content {
+			padding: 0.6em;
+		}
+		&__date {
+			padding: 0.2em;
+		}
+	}
 }
