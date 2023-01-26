@@ -16,14 +16,14 @@ class UserModel extends AbstractModel{
     {
         try
         {
+            if($data['username'] == '' || $data['password'] == '' || $data['name'] == '' || $data['surname'] == '')
+            {
+                throw new UserException("Incomplete user creation data. | Database error.",400);
+            }
             $username = $this->connection->quote($data['username']);
             $password = $this->connection->quote(password_hash($data['password'],PASSWORD_DEFAULT));
             $name = $this->connection->quote($data['name']);
             $surname = $this->connection->quote($data['surname']);
-            if($username == '' || $password == '' || $name == '' || $surname == '')
-            {
-                throw new UserException("Incomplete user creation data. | Database error.",400);
-            }
             $query = "INSERT into users(username,password,name,surname) VALUES($username,$password,$name,$surname)";
             $result = $this->connection->exec($query);
             return $result;
