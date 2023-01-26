@@ -10,24 +10,30 @@
 	<body>
 		<nav class="nav">
 			<div class="nav__logo">
-				<img src="./../public/icon/book.svg" alt="book" class="nav__logo" />
+				<a href="/">
+					<img src="./../public/icon/book.svg" alt="book" class="nav__logo" />
+				</a>
 				<p class="nav__logo-text">News</p>
 			</div>
 			<button class="nav__btn">
-				<img src="./../public/icon/menu.svg" alt="menu" class="nav__btn-burger" />
+				<img
+					src="./../public/icon/menu.svg"
+					alt="menu"
+					class="nav__btn-burger"
+				/>
 			</button>
 			<div class="nav__list nav__list--mobile">
 				<div class="nav__item">
 					<a href="/" class="nav__item-link">Home</a>
 				</div>
-			<?php if(empty($_SESSION['user'])): ?>
+				<?php if(empty($_SESSION['user'])): ?>
 				<div class="nav__item">
 					<a href="/login" class="nav__item-link">Log In</a>
 				</div>
 				<div class="nav__item">
 					<a href="/signup" class="nav__item-link">Sign Up</a>
 				</div>
-			<?php else: ?>
+				<?php else: ?>
 				<div class="nav__item">
 					<a href="/news-create" class="nav__item-link">Create News</a>
 				</div>
@@ -37,7 +43,7 @@
 				<div class="nav__item">
 					<a href="/logout" class="nav__item-link">Log Out</a>
 				</div>
-			<?php endif; ?>
+				<?php endif; ?>
 			</div>
 		</nav>
 		<header class="header">
