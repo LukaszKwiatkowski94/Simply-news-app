@@ -62,7 +62,18 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-4. Other settings
+4. Create the comments table
+```
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `newsID` int(11) NOT NULL,
+  `authorID` int(11) NOT NULL,
+  `content` varchar(500) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+5. Other settings
 ```
 ALTER TABLE `news`
   ADD PRIMARY KEY (`id`);
@@ -76,13 +87,19 @@ ALTER TABLE `news`
   
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT
+  
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ```
 
-5. Access to the Database
+6. Access to the Database
 - Go to the config directory.
 - Open the config.php file.
 - Change the database connection settings and save.
 
-6. Get an administrator
+7. Get an administrator
 - Create a user in the app using a form.
 - Change the value in the table "users" column "is_admin" from "0" to "1" for the user you want to become an administrator.
