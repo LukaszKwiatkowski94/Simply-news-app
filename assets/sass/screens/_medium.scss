@@ -41,32 +41,31 @@
 	}
 
 	.nav {
-	
 		&__list {
 			position: relative;
 			display: flex;
 			flex-direction: row;
 			align-items: stretch;
 			margin: 0 1em;
-            height: 100%;
+			height: 100%;
 		}
 
-		&__btn{
+		&__btn {
 			display: none;
 		}
 
 		&__item {
-            transition: background-color 1s;
+			transition: background-color 1s;
 
-            &:hover{
-                background-color: $winter-color;
-                a{
-                    color: $main-color;
-                }
-            }
+			&:hover {
+				background-color: $winter-color;
+				a {
+					color: $main-color;
+				}
+			}
 
 			&-link {
-                transition: color 1s;
+				transition: color 1s;
 			}
 		}
 	}
@@ -75,7 +74,7 @@
 		margin: 1em auto;
 		&__single {
 			padding: 0.4em;
-			font-size: 2.2rem;
+			// font-size: 2rem;
 		}
 		&__author {
 			padding: 0.6em;
