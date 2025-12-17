@@ -34,5 +34,5 @@ try {
         }
     }
 } catch (Throwable $e) {
-    // Don't let env loading break the app during startup.
+    throw $e;
 }
