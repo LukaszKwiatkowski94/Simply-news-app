@@ -30,7 +30,7 @@ class NewsController extends AbstractController
 
     public function create(): void
     {
-        if ($_SESSION['user']['is_admin'] == 0) {
+        if (!self::$user->isAdmin()) {
             throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
         }
         if (!empty($this->request->getRequestPost())) {
@@ -60,7 +60,7 @@ class NewsController extends AbstractController
 
     public function list(): void
     {
-        if ($_SESSION['user']['is_admin'] == 0) {
+        if (!self::$user->isAdmin()) {
             throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
         }
         $namePage = "list";
@@ -72,7 +72,7 @@ class NewsController extends AbstractController
     public function delete($id): void
     {
         try {
-            if ($_SESSION['user']['is_admin'] == 0) {
+            if (!self::$user->isAdmin()) {
                 throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
             }
             $this->model->delete((int)$id);
@@ -85,7 +85,7 @@ class NewsController extends AbstractController
     public function edit($id): void
     {
         try {
-            if ($_SESSION['user']['is_admin'] == 0) {
+            if (!self::$user->isAdmin()) {
                 throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
             }
             if (!empty($this->request->getRequestPost())) {

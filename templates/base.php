@@ -48,7 +48,7 @@
 							</a>
 						</li>
 						
-						<?php if(empty($_SESSION['user'])): ?>
+						<?php if(!$this->user->isLoggedIn()): ?>
 							<!-- Not logged in -->
 							<li class="nav__item">
 								<a href="/login" class="nav__item-link">
@@ -124,8 +124,8 @@
 							Home
 						</a>
 					</li>
-					
-					<?php if(empty($_SESSION['user'])): ?>
+
+					<?php if(!$this->user->isLoggedIn()): ?>
 						<li class="nav__item">
 							<a href="/login" class="nav__item-link">
 								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

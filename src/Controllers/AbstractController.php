@@ -7,6 +7,7 @@ namespace APP\Controllers;
 use APP\Models\AbstractModel;
 use APP\Request;
 use APP\Response;
+use APP\User;
 use APP\View;
 
 abstract class AbstractController
@@ -14,7 +15,8 @@ abstract class AbstractController
     protected const DEFAULT_PAGE = 'mainPage';
     private static array $configuration;
     public static string $myPage;
-    public static $response;
+    protected static $response;
+    protected static User $user;
     protected Request $request;
     protected View $view;
 
@@ -27,8 +29,9 @@ abstract class AbstractController
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->view = new View();
         self::$response = new Response();
+        self::$user = new User();
+        $this->view = new View(self::$user);
     }
 
     public function run(): void

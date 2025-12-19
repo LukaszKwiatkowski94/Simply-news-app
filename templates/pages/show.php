@@ -93,7 +93,7 @@
 			<h3 class="comments__title">Comments</h3>
 		</div>
 
-		<?php if(isset($_SESSION['user'])): ?>
+		<?php if($this->user->isLoggedIn()): ?>
 			<!-- Comment Form (for logged in users) -->
 			<div class="comments__form" id="myForm">
 				<textarea 
@@ -136,6 +136,6 @@
 
 <!-- JavaScript for Comments -->
 <script src=".././public/js/getComments.min.js"></script>
-<?php if(isset($_SESSION['user'])): ?>
+<?php if($this->user->isLoggedIn()): ?>
 <script src=".././public/js/createComment.min.js"></script>
 <?php endif; ?>

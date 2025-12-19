@@ -6,6 +6,12 @@ namespace APP;
 
 class View
 {
+    protected User $user;
+
+    public function __construct()
+    {
+        $this->user = new User();
+    }
 
     public function render($page, $params)
     {

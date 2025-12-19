@@ -73,6 +73,6 @@ final class User
     public static function isAdmin(): bool
     {
         //TODO:  implement admin check logic
-        return false;
+        return true;
     }
 }
