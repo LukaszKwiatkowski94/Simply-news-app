@@ -26,4 +26,8 @@ return function ($router) {
     // Comments routes
     $router->add(HttpMethod::GET, '/comments-news/{id}', CommentsController::class, 'getComments');
     $router->add(HttpMethod::POST, '/comments-create', CommentsController::class, 'createComment');
+
+    // Categories routes
+    $router->add(HttpMethod::GET, '/categories', NewsController::class, 'list');
+    $router->add(HttpMethod::POST, '/categories-create', NewsController::class, 'create');
 };

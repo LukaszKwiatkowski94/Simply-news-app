@@ -43,7 +43,11 @@ class NewsModel extends AbstractModel
     public function getListNews(): array
     {
         try {
-            $query = "SELECT id, title, date_created, date_last_updated, active FROM SN_news ORDER BY id desc";
+            $query = "  SELECT n.id AS id, n.title, n.date_created, n.date_last_updated, n.active, u.username AS author, c.name AS category 
+                        FROM SN_news AS n
+                        LEFT JOIN SN_users AS u ON n.author = u.id
+                        LEFT JOIN SN_categories AS c ON n.id_category = c.id
+                        ORDER BY id desc";
             $posts = $this->connection->query($query);
             $posts = $posts->fetchAll(PDO::FETCH_ASSOC);
             return $posts;
@@ -55,7 +59,11 @@ class NewsModel extends AbstractModel
     public function getSingleNews(int $id)
     {
         try {
-            $query = "SELECT id, title, content, date_created, author, active FROM SN_news WHERE id=$id";
+            $query = "SELECT n.id, n.title, n.content, n.date_created, n.active, u.username AS author, c.name AS category
+            FROM SN_news as n
+            LEFT JOIN SN_users AS u ON n.author = u.id
+            LEFT JOIN SN_categories AS c ON n.id_category = c.id
+            WHERE n.id=$id";
             $post = $this->connection->query($query);
             $result = $post->fetch(PDO::FETCH_ASSOC);
             return $result;

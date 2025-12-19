@@ -24,7 +24,7 @@ class CategoriesModel extends AbstractModel
     public function update(int $id, string $name, bool $isActive): void
     {
         $nameQuoted = $this->connection->quote($name);
-        $query = "UPDATE SN_categories SET name=$nameQuoted, isActive=" . ($isActive ? '1' : '0') . " WHERE id=$id";
+        $query = "UPDATE SN_categories SET name=$nameQuoted, is_active=" . ($isActive ? '1' : '0') . " WHERE id=$id";
         $this->connection->exec($query);
     }
 }
