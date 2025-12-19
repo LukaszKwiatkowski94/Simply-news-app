@@ -1,11 +1,14 @@
 <?php
+
 declare(strict_types=1);
+
 namespace APP;
 
-class View{
+class View
+{
 
     public function render($page, $params)
     {
-        include_once("./templates/base.php");
+        include_once(__DIR__ . '/../templates/base.php');
     }
 }

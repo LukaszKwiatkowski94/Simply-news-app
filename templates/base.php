@@ -197,7 +197,7 @@
 	<div class="wrapper">
 		<main>
 			<?php
-				include_once("./templates/pages/{$page}.php")
+				include_once(__DIR__ . "/pages/{$page}.php");
 			?>
 		</main>
 	</div>

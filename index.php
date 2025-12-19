@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 session_start();
 
-require_once __DIR__ . '/config/autoload.php';
-require_once __DIR__ . '/config/env.php';
+require_once __DIR__ . '/config/configuration.php';
 
 use APP\Controllers\AbstractController;
 use APP\Controllers\CommentsController;
@@ -18,32 +17,25 @@ use APP\Request;
 use APP\Router;
 
 try {
-    $configuration = require_once("./config/config.php");
-
-    AbstractModel::configuration($configuration);
-
 
     // require_once __DIR__ . '/src/routes.php';
 
     $router = new Router();
-    $request = new Request($_GET, $_POST);
-
-    $router->add(HttpMethod::GET, '/', [new NewsController($request), 'mainPage']);
-    $router->add(HttpMethod::GET, '/news-show/{id}', [new NewsController($request), 'show']);
-    $router->add(HttpMethod::GET, '/news-create', [new NewsController($request), 'create']);
-    $router->add(HttpMethod::POST, '/news-create', [new NewsController($request), 'create']);
-    $router->add(HttpMethod::GET, '/news-list', [new NewsController($request), 'list']);
-    $router->add(HttpMethod::GET, '/news-delete/{id}', [new NewsController($request), 'delete']);
-    $router->add(HttpMethod::GET, '/news-edit/{id}', [new NewsController($request), 'edit']);
-    $router->add(HttpMethod::POST, '/news-edit/{id}', [new NewsController($request), 'edit']);
-    $router->add(HttpMethod::GET, '/login', [new UserController($request), 'login']);
-    $router->add(HttpMethod::POST, '/login', [new UserController($request), 'login']);
-    $router->add(HttpMethod::GET, '/signup', [new UserController($request), 'signup']);
-    $router->add(HttpMethod::POST, '/signup', [new UserController($request), 'signup']);
-    $router->add(HttpMethod::GET, '/logout', [new UserController($request), 'logout']);
-    $router->add(HttpMethod::GET, '/comments-news/{id}', [new CommentsController($request), 'getComments']);
-    $router->add(HttpMethod::POST, '/comments-create', [new CommentsController($request), 'createComment']);
-
+    $router->add(HttpMethod::GET, '/', NewsController::class, 'mainPage');
+    $router->add(HttpMethod::GET, '/news-show/{id}', NewsController::class, 'show');
+    $router->add(HttpMethod::GET, '/news-create', NewsController::class, 'create');
+    $router->add(HttpMethod::POST, '/news-create', NewsController::class, 'create');
+    $router->add(HttpMethod::GET, '/news-list', NewsController::class, 'list');
+    $router->add(HttpMethod::GET, '/news-delete/{id}', NewsController::class, 'delete');
+    $router->add(HttpMethod::GET, '/news-edit/{id}', NewsController::class, 'edit');
+    $router->add(HttpMethod::POST, '/news-edit/{id}', NewsController::class, 'edit');
+    $router->add(HttpMethod::GET, '/login', UserController::class, 'logIn');
+    $router->add(HttpMethod::POST, '/login', UserController::class, 'logIn');
+    $router->add(HttpMethod::GET, '/signup', UserController::class, 'signUp');
+    $router->add(HttpMethod::POST, '/signup', UserController::class, 'signUp');
+    $router->add(HttpMethod::GET, '/logout', UserController::class, 'logOut');
+    $router->add(HttpMethod::GET, '/comments-news/{id}', CommentsController::class, 'getComments');
+    $router->add(HttpMethod::POST, '/comments-create', CommentsController::class, 'createComment');
     $router->dispatch();
 } catch (Exception $e) {
     AbstractController::$myPage = 'error';

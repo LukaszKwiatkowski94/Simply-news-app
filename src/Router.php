@@ -14,14 +14,22 @@ enum HttpMethod: string
 
 final class Router
 {
-    private array $routes = [];
 
-    public function add(HttpMethod $method, string $path, callable $handler): void
+    private array $routes = [];
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->request = new Request($_GET, $_POST);
+    }
+
+    public function add(HttpMethod $method, string $path, string $controllerClass, string $methodName): void
     {
         $this->routes[] = [
-            'method' => $method->value,
+            'httpMethod' => $method->value,
             'path' => $path,
-            'handler' => $handler,
+            'controller' => $controllerClass,
+            'controllerMethod' => $methodName,
         ];
     }
 
@@ -31,14 +39,15 @@ final class Router
         $currentMethod = $_SERVER['REQUEST_METHOD'];
 
         foreach ($this->routes as $route) {
-            if ($route['method'] !== $currentMethod) {
+            if ($route['httpMethod'] !== $currentMethod) {
                 continue;
             }
 
             $params = $this->match($route['path'], $currentPath);
 
             if ($params !== null) {
-                call_user_func($route['handler'], ...$params);
+                $controller = new $route['controller']($this->request);
+                call_user_func([$controller, $route['controllerMethod']], ...$params);
                 return;
             }
         }

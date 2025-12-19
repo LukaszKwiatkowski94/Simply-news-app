@@ -69,21 +69,20 @@ class NewsController extends AbstractController
         $this->view->render($namePage, $params);
     }
 
-    public function delete(): void
+    public function delete($id): void
     {
         try {
             if ($_SESSION['user']['is_admin'] == 0) {
                 throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
             }
-            $idNews = ($this->request->getRequestGet());
-            $this->model->delete((int)$idNews['id']);
+            $this->model->delete((int)$id);
             self::$response->redirect('/news-list')->send();
         } catch (Exception  $e) {
             throw new NewsException('Error deleting news', 400);
         }
     }
 
-    public function edit(): void
+    public function edit($id): void
     {
         try {
             if ($_SESSION['user']['is_admin'] == 0) {
@@ -101,9 +100,8 @@ class NewsController extends AbstractController
                 self::$response->redirect('/news-list')->send();
             }
             $namePage = "edit";
-            $idNews = ($this->request->getRequestGet());
             $params['header'] = 'Edit News';
-            $params['news'] = $this->model->getSingleNews((int)$idNews['id']);
+            $params['news'] = $this->model->getSingleNews((int)$id);
             if (empty($params['news'])) {
                 throw new NewsException('The requested news does not exist.', 400);
             }

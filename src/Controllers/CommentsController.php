@@ -19,27 +19,21 @@ class CommentsController extends AbstractController
         parent::__construct($request);
     }
 
-    public function getComments()
+    public function getComments($id)
     {
-        try
-        {
-            $data = $this->request->getRequestGet();
-            $id = $data['id'];
+        try {
             $comments = $this->model->getCommentsForNews((int)$id);
             header("Content-Type: application/json");
             echo json_encode($comments);
             // exit();
-        }
-        catch(Exception $e)
-        {
-            throw new CommentsException("Error in get Comments | Controller Error",400);        
+        } catch (Exception $e) {
+            throw new CommentsException("Error in get Comments | Controller Error", 400);
         }
     }
 
     public function createComment(): void
     {
-        try
-        {
+        try {
             $data = $this->request->getRequestPost();
             $dataComment = [
                 'authorID' => (string)$_SESSION['user']['id'],
@@ -47,10 +41,8 @@ class CommentsController extends AbstractController
                 'content' => $data['content']
             ];
             $result = $this->model->createComment($dataComment);
-        }
-        catch(Exception $e)
-        {
-            throw new CommentsException("Error add comment | Controller Error",400);
+        } catch (Exception $e) {
+            throw new CommentsException("Error add comment | Controller Error", 400);
         }
     }
 }
