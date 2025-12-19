@@ -7,7 +7,6 @@ session_start();
 require_once __DIR__ . '/config/configuration.php';
 
 use APP\Controllers\ErrorController;
-use APP\HttpMethod;
 use APP\Router;
 
 try {
