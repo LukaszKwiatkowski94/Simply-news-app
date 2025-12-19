@@ -16,15 +16,17 @@ final class CategoriesModel extends AbstractModel
 
     public function create(string $name): void
     {
-        $nameQuoted = $this->connection->quote($name);
-        $query = "INSERT INTO SN_categories(name) VALUES($nameQuoted)";
-        $this->connection->exec($query);
+        $stmt = $this->connection->prepare("INSERT INTO SN_categories(name) VALUES(:name)");
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
     }
 
     public function update(int $id, string $name, bool $isActive): void
     {
-        $nameQuoted = $this->connection->quote($name);
-        $query = "UPDATE SN_categories SET name=$nameQuoted, is_active=" . ($isActive ? '1' : '0') . " WHERE id=$id";
-        $this->connection->exec($query);
+        $stmt = $this->connection->prepare("UPDATE SN_categories SET name=:name, is_active=:is_active WHERE id=:id");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':is_active', $isActive, \PDO::PARAM_BOOL);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
     }
 }
