@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace APP;
 
-class Response
+final class Response
 {
     public function setStatusCode(int $code): void
     {

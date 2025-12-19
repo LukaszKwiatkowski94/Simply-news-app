@@ -7,7 +7,7 @@ namespace APP\Controllers;
 use APP\Controllers\AbstractController;
 use APP\View;
 
-class ErrorController extends AbstractController
+final class ErrorController extends AbstractController
 {
     private string $message;
     private int $code;

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace APP\Controllers;
 
 use APP\Controllers\AbstractController;
-use APP\Exception\NewsException;
-use APP\Exception\PermissionException;
 use APP\Models\NewsModel;
 use Exception;
 
-class NewsController extends AbstractController
+final class NewsController extends AbstractController
 {
     private NewsModel $model;
 
@@ -31,7 +29,7 @@ class NewsController extends AbstractController
     public function create(): void
     {
         if (!self::$user->isAdmin()) {
-            throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
+            throw new Exception("You don't have permissions. | Please contact your administrator.", 400);
         }
         if (!empty($this->request->getRequestPost())) {
             $data = $this->request->getRequestPost();
@@ -53,7 +51,7 @@ class NewsController extends AbstractController
         $params['header'] = ($this->model->getSingleNews((int)$id))['title'];
         $params['post'] = $this->model->getSingleNews((int)$id);
         if (empty($params['post'])) {
-            throw new NewsException('The requested news does not exist.', 400);
+            throw new Exception('The requested news does not exist.', 400);
         }
         $this->view->render($namePage, $params);
     }
@@ -61,7 +59,7 @@ class NewsController extends AbstractController
     public function list(): void
     {
         if (!self::$user->isAdmin()) {
-            throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
+            throw new Exception("You don't have permissions. | Please contact your administrator.", 400);
         }
         $namePage = "list";
         $params['header'] = "News List";
@@ -73,12 +71,12 @@ class NewsController extends AbstractController
     {
         try {
             if (!self::$user->isAdmin()) {
-                throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
+                throw new Exception("You don't have permissions. | Please contact your administrator.", 400);
             }
             $this->model->delete((int)$id);
             self::$response->redirect('/news-list');
         } catch (Exception  $e) {
-            throw new NewsException('Error deleting news', 400);
+            throw new Exception('Error deleting news', 400);
         }
     }
 
@@ -86,7 +84,7 @@ class NewsController extends AbstractController
     {
         try {
             if (!self::$user->isAdmin()) {
-                throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
+                throw new Exception("You don't have permissions. | Please contact your administrator.", 400);
             }
             if (!empty($this->request->getRequestPost())) {
                 $data = $this->request->getRequestPost();
@@ -103,11 +101,11 @@ class NewsController extends AbstractController
             $params['header'] = 'Edit News';
             $params['news'] = $this->model->getSingleNews((int)$id);
             if (empty($params['news'])) {
-                throw new NewsException('The requested news does not exist.', 400);
+                throw new Exception('The requested news does not exist.', 400);
             }
             $this->view->render($namePage, $params);
         } catch (Exception $e) {
-            throw new NewsException("News editing error", 400);
+            throw new Exception("News editing error", 400);
         }
     }
 }

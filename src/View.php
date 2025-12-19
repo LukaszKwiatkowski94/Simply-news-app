@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace APP;
 
-class View
+final class View
 {
     protected User $user;
 

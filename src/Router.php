@@ -20,7 +20,7 @@ final class Router
 
     public function __construct()
     {
-        $this->request = new Request($_GET, $_POST);
+        $this->request = new Request;
     }
 
     public function add(HttpMethod $method, string $path, string $controllerClass, string $methodName): void

@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace APP\Controllers;
 
 use APP\Controllers\AbstractController;
-use APP\Exception\CommentsException;
 use APP\Models\CategoriesModel;
 use Exception;
 
-class CategoriesController extends AbstractController
+final class CategoriesController extends AbstractController
 {
     public function list(): void
     {
@@ -21,7 +20,7 @@ class CategoriesController extends AbstractController
             $params['categories'] = $categories;
 
             $this->view->render('categories/list', $params);
-        } catch (CommentsException $e) {
+        } catch (Exception $e) {
             throw new Exception("Unable to fetch categories", 500);
         }
     }
