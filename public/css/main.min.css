@@ -518,14 +518,17 @@ body {
 
 .news-article__hero {
   position: relative;
+  margin-top: 10px;
   height: 40rem;
   width: 100%;
+  border-radius: 2em 2em 0 0;
 }
 
 .news-article__hero-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 2em 2em 0 0;
 }
 
 .news-article__hero-overlay {

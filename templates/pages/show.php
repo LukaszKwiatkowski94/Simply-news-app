@@ -26,7 +26,7 @@
 		<!-- Hero Image -->
 		<div class="news-article__hero">
 			<img 
-				src="./public/img/news_img.jpg" 
+				src="../../public/img/news_img.jpg" 
 				alt="<?php echo htmlspecialchars($params['post']['title']); ?>" 
 				class="news-article__hero-image"
 				loading="eager"
