@@ -7,7 +7,7 @@ namespace APP\Classes;
 /**
  * Represents user data.
  */
-final class UserData
+final class UserData extends AbstractClass
 {
     public function __construct(
         public readonly ?int $id,
@@ -21,7 +21,7 @@ final class UserData
      * @param array $data The associative array containing user data.
      * @return UserData The created UserData instance.
      */
-    public static function fromArray(array $data): self
+    public function fromArray(array $data): self
     {
         return new self(
             $data['id'] ?? null,
