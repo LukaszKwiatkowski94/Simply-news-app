@@ -6,6 +6,7 @@ namespace APP\Controllers;
 
 use APP\Models\AbstractModel;
 use APP\Request;
+use APP\Response;
 use APP\View;
 
 abstract class AbstractController
@@ -17,7 +18,7 @@ abstract class AbstractController
     protected Request $request;
     protected View $view;
 
-    public static function setConfiguration($configuration) : void
+    public static function setConfiguration($configuration): void
     {
         self::$configuration = $configuration;
         AbstractModel::configuration(self::$configuration);
@@ -27,6 +28,7 @@ abstract class AbstractController
     {
         $this->request = $request;
         $this->view = new View();
+        self::$response = new Response();
     }
 
     public function run(): void
@@ -37,7 +39,7 @@ abstract class AbstractController
         $this->$requestPage();
     }
 
-    protected function getPage() : string
+    protected function getPage(): string
     {
         return self::$myPage ?? self::DEFAULT_PAGE;
     }
@@ -46,6 +48,6 @@ abstract class AbstractController
     {
         $namePage = "pageNotFound";
         $params['header'] = "Page Not Found";
-        $this->view->render($namePage,$params);
+        $this->view->render($namePage, $params);
     }
 }

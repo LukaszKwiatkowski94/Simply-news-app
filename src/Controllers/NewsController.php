@@ -40,7 +40,7 @@ class NewsController extends AbstractController
                 'content' => $data['content']
             ];
             $this->model->createNews($dataCreateNews);
-            self::$response->redirect('/news-list')->send();
+            self::$response->redirect('/news-list');
         }
         $namePage = "create";
         $params['header'] = "Create News";
@@ -76,7 +76,7 @@ class NewsController extends AbstractController
                 throw new PermissionException("You don't have permissions. | Please contact your administrator.", 400);
             }
             $this->model->delete((int)$id);
-            self::$response->redirect('/news-list')->send();
+            self::$response->redirect('/news-list');
         } catch (Exception  $e) {
             throw new NewsException('Error deleting news', 400);
         }
@@ -97,7 +97,7 @@ class NewsController extends AbstractController
                     'active' => $data['active']
                 ];
                 $this->model->edit($dataCreateNews);
-                self::$response->redirect('/news-list')->send();
+                self::$response->redirect('/news-list');
             }
             $namePage = "edit";
             $params['header'] = 'Edit News';

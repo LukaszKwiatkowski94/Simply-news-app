@@ -14,70 +14,53 @@ class UserController extends AbstractController
 
     public function __construct($request)
     {
-        $this->model = new UserModel();
         parent::__construct($request);
+        $this->model = new UserModel();
     }
 
     public function logIn(): void
     {
-        if(!empty($this->request->getRequestPost()) && empty($_SESSION['user']))
-        {
+        if (!empty($this->request->getRequestPost()) && empty($_SESSION['user'])) {
             $data = $this->request->getRequestPost();
             $user = $this->model->get($data);
-            
-            if(!empty($user))
-            {
+
+            if (!empty($user)) {
                 $_SESSION['user'] = $user;
-                self::$response->redirect('/')->send();
+                self::$response->redirect('/');
+            } else {
+                throw new UserException("Error while logging in. Check the correctness of the data and log in again.", 400);
             }
-            else
-            {
-                throw new UserException("Error while logging in. Check the correctness of the data and log in again.",400);
-            }
-        }
-        else if(!empty($_SESSION['user']))
-        {
-            self::$response->redirect('/')->send();
-        }
-        else
-        {
+        } else if (!empty($_SESSION['user'])) {
+            self::$response->redirect('/');
+        } else {
             $params['header'] = 'Log In';
-            $this->view->render('login',$params);
+            $this->view->render('login', $params);
         }
     }
 
     public function logOut(): void
     {
-        if(!empty($_SESSION['user']))
-        {
+        if (!empty($_SESSION['user'])) {
             session_destroy();
         }
-        self::$response->redirect('/')->send();
+        self::$response->redirect('/');
     }
 
     public function signUp(): void
     {
-        if(!empty($this->request->getRequestPost()) && empty($_SESSION['user']))
-        {
+        if (!empty($this->request->getRequestPost()) && empty($_SESSION['user'])) {
             $data = $this->request->getRequestPost();
             $userValidationStatus = $this->model->create($data);
-            if($userValidationStatus)
-            {
-                self::$response->redirect('/login')->send();
+            if ($userValidationStatus) {
+                self::$response->redirect('/login');
+            } else {
+                throw new UserException("User registration error.", 400);
             }
-            else
-            {
-                throw new UserException("User registration error.",400);
-            }
-        }
-        else if(empty($_SESSION['user']))
-        {
+        } else if (empty($_SESSION['user'])) {
             $params['header'] = 'Sign Up';
-            $this->view->render('signup',$params);
-        }
-        else
-        {
-            self::$response->redirect('/')->send();
+            $this->view->render('signup', $params);
+        } else {
+            self::$response->redirect('/');
         }
     }
 }
