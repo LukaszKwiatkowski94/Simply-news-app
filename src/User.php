@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace APP;
 
 use APP\Classes\UserData;
+use APP\Models\UserModel;
 
 /**
  * Manages user session data.
@@ -52,27 +53,27 @@ final class User
 
     public static function getUserId(): ?int
     {
-        return $_SESSION['user']['id'] ?? null;
+        return isset($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
     }
 
     public static function getUsername(): ?string
     {
-        return $_SESSION['user']['username'] ?? null;
+        return isset($_SESSION['user']['username']) ? $_SESSION['user']['username'] : null;
     }
 
     public static function getName(): ?string
     {
-        return $_SESSION['user']['name'] ?? null;
+        return isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : null;
     }
 
     public static function getSurname(): ?string
     {
-        return $_SESSION['user']['surname'] ?? null;
+        return isset($_SESSION['user']['surname']) ? $_SESSION['user']['surname'] : null;
     }
 
     public static function isAdmin(): bool
     {
-        //TODO:  implement admin check logic
-        return true;
+        $userData = (new UserModel())->getUserById((int)self::getUserId());
+        return isset($userData['is_admin']) && $userData['is_admin'] == 1;
     }
 }

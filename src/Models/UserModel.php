@@ -52,4 +52,19 @@ final class UserModel extends AbstractModel
             throw new Exception("Error while logging in. Check the correctness of the data and log in again. | DataBase Error", 400);
         }
     }
+
+    public function getUserById(int $id)
+    {
+        try {
+            $query = "  SELECT id, username, name, surname, is_admin, active
+                        FROM SN_users 
+                        WHERE id = ?";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([$id]);
+            $getUser = $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
+            return $getUser;
+        } catch (Exception $e) {
+            throw new Exception("Error while fetching user by ID. | Database error.", 400);
+        }
+    }
 }
