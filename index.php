@@ -15,5 +15,5 @@ try {
     $registerRoutes($router);
     $router->dispatch();
 } catch (Exception $e) {
-    (new ErrorController($e->getMessage()))->run();
+    (new ErrorController($e->getMessage(), $e->getCode()))->error();
 }

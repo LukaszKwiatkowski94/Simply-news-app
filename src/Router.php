@@ -52,8 +52,7 @@ final class Router
             }
         }
 
-        http_response_code(404);
-        echo "Not found";
+        throw new \Exception("Page not found", 404);
     }
 
     private function match(string $pattern, string $path): ?array

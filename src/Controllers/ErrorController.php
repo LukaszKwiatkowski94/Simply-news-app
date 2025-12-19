@@ -10,16 +10,20 @@ use APP\View;
 class ErrorController extends AbstractController
 {
     private string $message;
-    public function __construct(?string $message)
+    private int $code;
+
+    public function __construct(string $message, int $code)
     {
         $this->view = new View();
         $this->message = $message;
+        $this->code = $code;
     }
 
     public function error(): void
     {
-        $params['header'] = 'Server Error';
+        $params['header'] = $this->code === 404 ? 'Page Not Found' : 'Error';
         $params['message'] = $this->message ?? 'Server operation problem. Please contact your administrator.';
-        $this->view->render('error',$params);
+        $params['code'] = $this->code ?? 500;
+        $this->view->render('error', $params);
     }
 }
