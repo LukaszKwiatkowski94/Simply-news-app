@@ -28,8 +28,8 @@ abstract class AbstractController
     public function __construct(Request $request)
     {
         $this->request = $request;
-        self::$response = new Response();
-        self::$user = new User();
+        self::$response = new Response;
+        self::$user = new User;
         $this->view = new View(self::$user);
     }
 }

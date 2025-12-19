@@ -6,11 +6,10 @@ namespace APP\Controllers;
 
 use APP\Classes\UserData;
 use APP\Controllers\AbstractController;
-use APP\Exception\UserException;
 use APP\Models\UserModel;
-use APP\User;
+use Exception;
 
-class UserController extends AbstractController
+final class UserController extends AbstractController
 {
     private UserModel $model;
 
@@ -36,7 +35,7 @@ class UserController extends AbstractController
                 self::$user->login($userData);
                 self::$response->redirect('/');
             } else {
-                throw new UserException("Error while logging in. Check the correctness of the data and log in again.", 400);
+                throw new Exception("Error while logging in. Check the correctness of the data and log in again.", 400);
             }
         } else if (self::$user->isLoggedIn()) {
             self::$response->redirect('/');
@@ -62,7 +61,7 @@ class UserController extends AbstractController
             if ($userValidationStatus) {
                 self::$response->redirect('/login');
             } else {
-                throw new UserException("User registration error.", 400);
+                throw new Exception("User registration error.", 400);
             }
         } else if (!self::$user->isLoggedIn()) {
             $params['header'] = 'Sign Up';

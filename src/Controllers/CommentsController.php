@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace APP\Controllers;
 
 use APP\Controllers\AbstractController;
-use APP\Exception\CommentsException;
 use APP\Models\CommentsModel;
 use Exception;
 
-class CommentsController extends AbstractController
+final class CommentsController extends AbstractController
 {
     private CommentsModel $model;
 
@@ -27,7 +26,7 @@ class CommentsController extends AbstractController
             echo json_encode($comments);
             // exit();
         } catch (Exception $e) {
-            throw new CommentsException("Error in get Comments | Controller Error", 400);
+            throw new Exception("Error in get Comments | Controller Error", 400);
         }
     }
 
@@ -42,7 +41,7 @@ class CommentsController extends AbstractController
             ];
             $result = $this->model->createComment($dataComment);
         } catch (Exception $e) {
-            throw new CommentsException("Error add comment | Controller Error", 400);
+            throw new Exception("Error add comment | Controller Error", 400);
         }
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace APP\Models;
 
 
-class CategoriesModel extends AbstractModel
+final class CategoriesModel extends AbstractModel
 {
     public function list(): array
     {

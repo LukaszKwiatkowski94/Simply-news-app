@@ -10,7 +10,7 @@ use APP\Controllers\ErrorController;
 use APP\Router;
 
 try {
-    $router = new Router();
+    $router = new Router;
     $registerRoutes = require __DIR__ . '/config/routes.php';
     $registerRoutes($router);
     $router->dispatch();
