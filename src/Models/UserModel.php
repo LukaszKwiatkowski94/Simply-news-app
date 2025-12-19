@@ -14,15 +14,18 @@ final class UserModel extends AbstractModel
     public function create(array $data)
     {
         try {
-            if ($data['username'] == '' || $data['password'] == '' || $data['name'] == '' || $data['surname'] == '') {
+            if (empty($data['username']) || empty($data['password']) || empty($data['name']) || empty($data['surname'])) {
                 throw new Exception("Incomplete user creation data. | Database error.", 400);
             }
-            $username = $this->connection->quote($data['username']);
-            $password = $this->connection->quote(password_hash($data['password'], PASSWORD_DEFAULT));
-            $name = $this->connection->quote($data['name']);
-            $surname = $this->connection->quote($data['surname']);
-            $query = "INSERT into SN_users(username,password,name,surname) VALUES($username,$password,$name,$surname)";
-            $result = $this->connection->exec($query);
+            $stmt = $this->connection->prepare("INSERT INTO SN_users(username, password, name, surname) 
+                    VALUES(:username, :password, :name, :surname)");
+            $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindParam(':name', $data['name'], PDO::PARAM_STR);
+            $stmt->bindParam(':surname', $data['surname'], PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $this->connection->lastInsertId();
             return $result;
         } catch (Exception $e) {
             throw new Exception("User creation error. | Database error.", 400);
@@ -32,13 +35,13 @@ final class UserModel extends AbstractModel
     public function get(array $data)
     {
         try {
-            $username = $this->connection->quote($data['username']);
-            $password = $data['password'];
-            $query = "SELECT * 
+            $stmt = $this->connection->prepare("SELECT * 
                     FROM SN_users 
-                    WHERE username = $username";
-            $user = $this->connection->query($query);
-            $getUser = $user->fetch(PDO::FETCH_ASSOC) ?? [];
+                    WHERE username = :username");
+            $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
+            $stmt->execute();
+            $getUser = $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
+            $password = isset($data['password']) ? $data['password'] : null;
             if (isset($getUser)) {
                 if (password_verify($password, $getUser['password'])) {
                     return $getUser;
@@ -56,11 +59,11 @@ final class UserModel extends AbstractModel
     public function getUserById(int $id)
     {
         try {
-            $query = "  SELECT id, username, name, surname, is_admin, active
-                        FROM SN_users 
-                        WHERE id = ?";
-            $stmt = $this->connection->prepare($query);
-            $stmt->execute([$id]);
+            $stmt = $this->connection->prepare("SELECT id, username, name, surname, is_admin, active 
+                    FROM SN_users 
+                    WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
             $getUser = $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
             return $getUser;
         } catch (Exception $e) {
