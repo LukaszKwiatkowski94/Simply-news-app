@@ -8,11 +8,13 @@ final class Category extends AbstractClass
 {
     private int $id;
     private string $name;
+    private bool $isActive;
 
-    public function __construct(int $id, string $name)
+    public function __construct(int $id, string $name, bool $isActive = true)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->isActive = $isActive;
     }
 
     public function getId(): int
@@ -25,11 +27,17 @@ final class Category extends AbstractClass
         return $this->name;
     }
 
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
     public function fromArray(array $data): self
     {
         return new self(
             $data['id'] ?? 0,
-            $data['name'] ?? ''
+            $data['name'] ?? '',
+            $data['isActive'] ?? true
         );
     }
 
@@ -38,6 +46,7 @@ final class Category extends AbstractClass
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'isActive' => $this->isActive,
         ];
     }
 
