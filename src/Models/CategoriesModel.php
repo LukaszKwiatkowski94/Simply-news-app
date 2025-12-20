@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace APP\Models;
 
+use APP\Classes\Category;
 
 final class CategoriesModel extends AbstractModel
 {
@@ -11,7 +12,15 @@ final class CategoriesModel extends AbstractModel
     {
         $stmt = $this->connection->prepare("SELECT * FROM SN_categories");
         $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $categories = [];
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $category) {
+            $categories[] = new Category(
+                (int)$category['id'],
+                $category['name'],
+                (bool)$category['is_active']
+            );
+        }
+        return $categories;
     }
 
     public function create(string $name): void
@@ -21,12 +30,12 @@ final class CategoriesModel extends AbstractModel
         $stmt->execute();
     }
 
-    public function update(int $id, string $name, bool $isActive): void
+    public function update(Category $category): void
     {
         $stmt = $this->connection->prepare("UPDATE SN_categories SET name=:name, is_active=:is_active WHERE id=:id");
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':is_active', $isActive, \PDO::PARAM_BOOL);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindParam(':name', $category->getName());
+        $stmt->bindParam(':is_active', $category->isActive(), \PDO::PARAM_BOOL);
+        $stmt->bindParam(':id', $category->getId(), \PDO::PARAM_INT);
         $stmt->execute();
     }
 }

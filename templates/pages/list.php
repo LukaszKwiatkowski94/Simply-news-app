@@ -55,12 +55,12 @@
 
 						<!-- Date Created -->
 						<td>
-							<?php echo $news['date_created']; ?>
+							<?php echo $news['dateCreated']; ?>
 						</td>
 
 						<!-- Date Updated -->
 						<td>
-							<?php echo $news['date_last_updated'] ?? '-'; ?>
+							<?php echo $news['dateLastUpdated'] ?? '-'; ?>
 						</td>
 
 						<!-- Actions -->

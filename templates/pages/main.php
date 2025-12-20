@@ -38,7 +38,7 @@
 									<line x1="8" y1="2" x2="8" y2="6"></line>
 									<line x1="3" y1="10" x2="21" y2="10"></line>
 								</svg>
-								<span><?php echo $firstPost['date_created']; ?></span>
+								<span><?php echo $firstPost['dateCreated']; ?></span>
 							</div>
 
 							<!-- Title -->
@@ -110,7 +110,7 @@
 										<line x1="8" y1="2" x2="8" y2="6"></line>
 										<line x1="3" y1="10" x2="21" y2="10"></line>
 									</svg>
-									<span><?php echo $post['date_created']; ?></span>
+									<span><?php echo $post['dateCreated']; ?></span>
 								</div>
 
 								<button class="news-card__btn">
