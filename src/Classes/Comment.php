@@ -11,14 +11,16 @@ final class Comment extends AbstractClass
     private int $authorId;
     private string $content;
     private string $createdAt;
+    private string $authorName;
 
-    public function __construct(int $id, int $newsId, int $authorId, string $content, string $createdAt)
+    public function __construct(int $id, int $newsId, int $authorId, string $content, string $createdAt, string $authorName = '')
     {
         $this->id = $id;
         $this->newsId = $newsId;
         $this->authorId = $authorId;
         $this->content = $content;
         $this->createdAt = $createdAt;
+        $this->authorName = $authorName;
     }
 
     public function getId(): int
@@ -46,6 +48,16 @@ final class Comment extends AbstractClass
         return $this->createdAt;
     }
 
+    public function getAuthorName(): string
+    {
+        return $this->authorName;
+    }
+
+    public function setAuthorName(string $authorName): void
+    {
+        $this->authorName = $authorName;
+    }
+
     public function fromArray(array $data): self
     {
         return new self(
@@ -53,7 +65,8 @@ final class Comment extends AbstractClass
             $data['newsId'] ?? 0,
             $data['authorId'] ?? 0,
             $data['content'] ?? '',
-            $data['createdAt'] ?? ''
+            $data['createdAt'] ?? '',
+            $data['authorName'] ?? ''
         );
     }
 
@@ -65,6 +78,7 @@ final class Comment extends AbstractClass
             'newsId' => $this->newsId,
             'content' => $this->content,
             'createdAt' => $this->createdAt,
+            'authorName' => $this->authorName
         ];
     }
 

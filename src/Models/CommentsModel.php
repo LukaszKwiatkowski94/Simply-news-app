@@ -30,12 +30,23 @@ final class CommentsModel extends AbstractModel
     public function getCommentsForNews(int $id): array
     {
         try {
-            $stmt = $this->connection->prepare("SELECT u.username as author, c.content, c.date_created 
+            $stmt = $this->connection->prepare("SELECT c.id, u.id as authorID, u.username as author, c.content, c.date_created 
                     FROM SN_comments c JOIN SN_users u ON c.authorID = u.id
                     WHERE newsID=:newsID");
             $stmt->bindParam(':newsID', $id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC) ?? [];
+            $comments = [];
+            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $comments[] = new Comment(
+                    $row['id'],
+                    $id,
+                    $row['authorID'],
+                    $row['content'],
+                    $row['date_created'],
+                    $row['author']
+                );
+            }
+            return $comments ?? [];
         } catch (Exception $e) {
             throw new Exception("Error in getting a comments for News", 400);
         }
