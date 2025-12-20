@@ -16,6 +16,22 @@ final class UserData extends AbstractClass
         public readonly ?string $surname
     ) {}
 
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
     /**
      * Creates a UserData instance from an associative array.
      * @param array $data The associative array containing user data.

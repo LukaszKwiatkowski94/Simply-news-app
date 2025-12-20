@@ -118,7 +118,7 @@ final class NewsController extends AbstractController
             }
             $namePage = "edit";
             $params['header'] = 'Edit News';
-            $params['news'] = $this->model->getSingleNews((int)$id);
+            $params['news'] = $this->model->getSingleNews((int)$id)->toArray();
             if (empty($params['news'])) {
                 throw new Exception('The requested news does not exist.', 400);
             }
