@@ -11,6 +11,10 @@ use PDO;
 
 final class NewsModel extends AbstractModel
 {
+    /**
+     * @param News $news
+     * @return void
+     */
     public function createNews(News $news): void
     {
         try {
@@ -26,6 +30,9 @@ final class NewsModel extends AbstractModel
         }
     }
 
+    /**
+     * @return News[]
+     */
     public function getNews(): array
     {
         try {
@@ -52,6 +59,9 @@ final class NewsModel extends AbstractModel
         }
     }
 
+    /**
+     * @return News[]
+     */
     public function getListNews(): array
     {
         try {
@@ -82,6 +92,10 @@ final class NewsModel extends AbstractModel
         }
     }
 
+    /**
+     * @param int $id
+     * @return News
+     */
     public function getSingleNews(int $id): News
     {
         try {
@@ -93,7 +107,7 @@ final class NewsModel extends AbstractModel
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return new News(
+            $post = new News(
                 (int)$result['id'],
                 $result['title'],
                 $result['content'],
@@ -104,11 +118,16 @@ final class NewsModel extends AbstractModel
                 $result['author'],
                 $result['category']
             );
+            return $post;
         } catch (Exception $e) {
             throw new Exception('Failed to get news. | Database error.', 400);
         }
     }
 
+    /**
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void
     {
         try {
@@ -120,6 +139,10 @@ final class NewsModel extends AbstractModel
         }
     }
 
+    /**
+     * @param News $news
+     * @return void
+     */
     public function edit(News $news): void
     {
         try {
