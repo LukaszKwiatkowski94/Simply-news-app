@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace APP\Controllers;
 
+use APP\Classes\News;
 use APP\Controllers\AbstractController;
 use APP\Models\NewsModel;
 use Exception;
@@ -22,7 +23,12 @@ final class NewsController extends AbstractController
     {
         $namePage = "main";
         $params['header'] = "Main Page";
-        $params['posts'] = $this->model->getNews();
+        $newsDb = $this->model->getNews();
+        $listNews = [];
+        foreach ($newsDb as $newsItem) {
+            $listNews[] = $newsItem->toArray();
+        }
+        $params['posts'] = $listNews;
         $this->view->render($namePage, $params);
     }
 
@@ -33,10 +39,14 @@ final class NewsController extends AbstractController
         }
         if (!empty($this->request->getRequestPost())) {
             $data = $this->request->getRequestPost();
-            $dataCreateNews = [
-                'title' => $data['title'],
-                'content' => $data['content']
-            ];
+            $dataCreateNews = new News(
+                0,
+                $data['title'],
+                $data['content'],
+                self::$user->getUserId(),
+                date('Y-m-d H:i:s'),
+                true
+            );
             $this->model->createNews($dataCreateNews);
             self::$response->redirect('/news-list');
         }
@@ -48,8 +58,9 @@ final class NewsController extends AbstractController
     public function show($id): void
     {
         $namePage = "show";
-        $params['header'] = ($this->model->getSingleNews((int)$id))['title'];
-        $params['post'] = $this->model->getSingleNews((int)$id);
+        $post = $this->model->getSingleNews((int)$id);
+        $params['header'] = $post->getTitle();
+        $params['post'] = $post->toArray();
         if (empty($params['post'])) {
             throw new Exception('The requested news does not exist.', 400);
         }
@@ -63,7 +74,12 @@ final class NewsController extends AbstractController
         }
         $namePage = "list";
         $params['header'] = "News List";
-        $params['news'] = $this->model->getListNews();
+        $news = $this->model->getListNews();
+        $listNews = [];
+        foreach ($news as $newsItem) {
+            $listNews[] = $newsItem->toArray();
+        }
+        $params['news'] = $listNews;
         $this->view->render($namePage, $params);
     }
 
@@ -88,13 +104,16 @@ final class NewsController extends AbstractController
             }
             if (!empty($this->request->getRequestPost())) {
                 $data = $this->request->getRequestPost();
-                $dataCreateNews = [
-                    'id' => $data['id'],
-                    'title' => $data['title'],
-                    'content' => $data['content'],
-                    'active' => $data['active']
-                ];
-                $this->model->edit($dataCreateNews);
+                $news = new News(
+                    (int)$data['id'],
+                    $data['title'],
+                    $data['content'],
+                    0,
+                    '',
+                    $data['active'],
+                    ''
+                );
+                $this->model->edit($news);
                 self::$response->redirect('/news-list');
             }
             $namePage = "edit";

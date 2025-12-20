@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace APP\Models;
 
+use APP\Classes\News;
 use APP\Models\AbstractModel;
 use Exception;
 use PDO;
 
 final class NewsModel extends AbstractModel
 {
-    public function createNews(array $data): void
+    public function createNews(News $news): void
     {
         try {
             $stmt = $this->connection->prepare("INSERT INTO SN_news(title, content, author, date_created, active) 
-                    VALUES(:title, :content, :author, :date_created, :active)");
-            $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
-            $stmt->bindParam(':content', $data['content'], PDO::PARAM_STR);
-            $stmt->bindParam(':author', $_SESSION['user']['id'], PDO::PARAM_INT);
-            $stmt->bindParam(':date_created', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-            $active = true;
-            $stmt->bindParam(':active', $active, PDO::PARAM_BOOL);
+                    VALUES(:title, :content, :author, now(), :active)");
+            $stmt->bindParam(':title', $news->getTitle(), PDO::PARAM_STR);
+            $stmt->bindParam(':content', $news->getContent(), PDO::PARAM_STR);
+            $stmt->bindParam(':author', $news->getAuthorId(), PDO::PARAM_INT);
+            $stmt->bindParam(':active', $news->isActive(), PDO::PARAM_BOOL);
             $stmt->execute();
         } catch (Exception $e) {
             throw new Exception('Failed to create news. | Database error.', 400);
@@ -36,7 +35,18 @@ final class NewsModel extends AbstractModel
                     ORDER BY id desc");
             $stmt->execute();
             $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $posts;
+            $postList = [];
+            foreach ($posts as $post) {
+                $postList[] = new News(
+                    (int)$post['id'],
+                    $post['title'],
+                    $post['content'],
+                    0,
+                    $post['date_created'],
+                    true
+                );
+            }
+            return $postList;
         } catch (Exception $e) {
             throw new Exception('Failed to get news list. | Database error.', 400);
         }
@@ -52,13 +62,27 @@ final class NewsModel extends AbstractModel
                     ORDER BY id desc");
             $stmt->execute();
             $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $posts;
+            $listPosts = [];
+            foreach ($posts as $post) {
+                $listPosts[] = new News(
+                    (int)$post['id'],
+                    $post['title'],
+                    '',
+                    0,
+                    $post['date_created'],
+                    (bool)$post['active'],
+                    $post['date_last_updated'],
+                    $post['author'],
+                    $post['category']
+                );
+            }
+            return $listPosts;
         } catch (Exception $e) {
             throw new Exception('Failed to get news list for admin. | Database error.', 400);
         }
     }
 
-    public function getSingleNews(int $id)
+    public function getSingleNews(int $id): News
     {
         try {
             $stmt = $this->connection->prepare("SELECT n.id, n.title, n.content, n.date_created, n.active, u.username AS author, c.name AS category
@@ -69,7 +93,17 @@ final class NewsModel extends AbstractModel
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result;
+            return new News(
+                (int)$result['id'],
+                $result['title'],
+                $result['content'],
+                0,
+                $result['date_created'],
+                (bool)$result['active'],
+                $result['date_last_updated'] ?? '',
+                $result['author'],
+                $result['category']
+            );
         } catch (Exception $e) {
             throw new Exception('Failed to get news. | Database error.', 400);
         }
@@ -86,22 +120,19 @@ final class NewsModel extends AbstractModel
         }
     }
 
-    public function edit(array $data): void
+    public function edit(News $news): void
     {
         try {
             $stmt = $this->connection->prepare("UPDATE SN_news
                       SET title = :title,
                           content = :content,
-                          date_last_updated = :date_last_updated,
+                          date_last_updated = now(),
                           active = :active
                       WHERE id = :id");
-            $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
-            $stmt->bindParam(':content', $data['content'], PDO::PARAM_STR);
-            $dateLastUpdated = date('Y-m-d H:i:s');
-            $stmt->bindParam(':date_last_updated', $dateLastUpdated, PDO::PARAM_STR);
-            $active = ($data['active'] == 'on') ? 1 : 0;
-            $stmt->bindParam(':active', $active, PDO::PARAM_BOOL);
-            $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            $stmt->bindParam(':title', $news->getTitle(), PDO::PARAM_STR);
+            $stmt->bindParam(':content', $news->getContent(), PDO::PARAM_STR);
+            $stmt->bindParam(':active', $news->isActive(), PDO::PARAM_BOOL);
+            $stmt->bindParam(':id', $news->getId(), PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             throw new Exception("Failed to edit news. | Database error.", 400);

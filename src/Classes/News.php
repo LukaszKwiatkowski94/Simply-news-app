@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace APP\Classes;
 
-final class Comment extends AbstractClass
+final class News extends AbstractClass
 {
     private int $id;
     private string $title;
@@ -12,15 +12,21 @@ final class Comment extends AbstractClass
     private int $authorId;
     private string $dateCreated;
     private bool $active;
+    private ?string $dateLastUpdated;
+    private string $authorName;
+    private string $categoryName;
 
-    public function __construct(int $id, string $title, string $content, int $authorId, string $dateCreated, bool $active)
+    public function __construct(int $id, string $title, string $content, int $authorId, string $dateCreated, bool $active, ?string $dateLastUpdated = '', string $authorName = '', string $categoryName = '')
     {
         $this->id = $id;
         $this->title = $title;
         $this->content = $content;
         $this->authorId = $authorId;
+        $this->dateLastUpdated = $dateLastUpdated;
         $this->dateCreated = $dateCreated;
         $this->active = $active;
+        $this->authorName = $authorName;
+        $this->categoryName = $categoryName;
     }
 
     public function getId(): int
@@ -53,6 +59,16 @@ final class Comment extends AbstractClass
         return $this->active;
     }
 
+    public function getAuthorName(): string
+    {
+        return $this->authorName;
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->categoryName;
+    }
+
     public function fromArray(array $data): self
     {
         return new self(
@@ -61,7 +77,10 @@ final class Comment extends AbstractClass
             $data['content'] ?? '',
             $data['authorId'] ?? 0,
             $data['dateCreated'] ?? '',
-            $data['active'] ?? false
+            $data['dateLastUpdated'] ?? '',
+            $data['active'] ?? false,
+            $data['authorName'] ?? '',
+            $data['categoryName'] ?? ''
         );
     }
 
@@ -73,7 +92,10 @@ final class Comment extends AbstractClass
             'content' => $this->content,
             'authorId' => $this->authorId,
             'dateCreated' => $this->dateCreated,
+            'dateLastUpdated' => $this->dateLastUpdated,
             'active' => $this->active,
+            'authorName' => $this->authorName,
+            'categoryName' => $this->categoryName
         ];
     }
 

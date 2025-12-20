@@ -15,8 +15,8 @@ final class CommentsModel extends AbstractModel
     {
         try {
 
-            $stmt = $this->connection->prepare("INSERT INTO SN_comments(newsID, authorID, content, now()) 
-                    VALUES(:newsID, :authorID, :content)");
+            $stmt = $this->connection->prepare("INSERT INTO SN_comments(newsID, authorID, content, date_created) 
+                    VALUES(:newsID, :authorID, :content, now())");
             $stmt->bindParam(':newsID', $comment->getNewsID(), PDO::PARAM_INT);
             $stmt->bindParam(':authorID', $comment->getAuthorID(), PDO::PARAM_INT);
             $stmt->bindParam(':content', $comment->getContent(), PDO::PARAM_STR);
