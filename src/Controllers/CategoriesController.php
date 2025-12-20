@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace APP\Controllers;
 
+use APP\Classes\Category;
 use APP\Controllers\AbstractController;
 use APP\Models\CategoriesModel;
 use Exception;
@@ -45,7 +46,7 @@ final class CategoriesController extends AbstractController
             $categoriesModel = new CategoriesModel();
 
             // Update category using data from the request
-            $category = new \APP\Classes\Category(
+            $category = new Category(
                 (int)$data['id'],
                 $data['name'],
                 isset($data['is_active']) ? (bool)$data['is_active'] : false
