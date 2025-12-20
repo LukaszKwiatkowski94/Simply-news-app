@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace APP\Models;
 
+use APP\Classes\Comment;
 use APP\Models\AbstractModel;
 use Exception;
 use PDO;
 
 final class CommentsModel extends AbstractModel
 {
-    public function createComment(array $data): void
+    public function createComment(Comment $comment): void
     {
         try {
 
-            $stmt = $this->connection->prepare("INSERT INTO SN_comments(newsID, authorID, content, date_created) 
-                    VALUES(:newsID, :authorID, :content, :date_created)");
-            $stmt->bindParam(':newsID', $data['newsID'], PDO::PARAM_INT);
-            $stmt->bindParam(':authorID', $data['authorID'], PDO::PARAM_INT);
-            $stmt->bindParam(':content', $data['content'], PDO::PARAM_STR);
-            $stmt->bindParam(':date_created', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+            $stmt = $this->connection->prepare("INSERT INTO SN_comments(newsID, authorID, content, now()) 
+                    VALUES(:newsID, :authorID, :content)");
+            $stmt->bindParam(':newsID', $comment->getNewsID(), PDO::PARAM_INT);
+            $stmt->bindParam(':authorID', $comment->getAuthorID(), PDO::PARAM_INT);
+            $stmt->bindParam(':content', $comment->getContent(), PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
             file_put_contents('./log_' . date("j.n.Y") . '.log', $e->getMessage(), FILE_APPEND);
