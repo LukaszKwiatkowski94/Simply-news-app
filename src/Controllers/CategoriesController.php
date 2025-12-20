@@ -37,4 +37,25 @@ final class CategoriesController extends AbstractController
             throw new Exception("Error creating category", 400);
         }
     }
+
+    public function update(): void
+    {
+        try {
+            $data = self::$request->getRequestPost();
+            $categoriesModel = new CategoriesModel();
+
+            // Update category using data from the request
+            $category = new \APP\Classes\Category(
+                (int)$data['id'],
+                $data['name'],
+                isset($data['is_active']) ? (bool)$data['is_active'] : false
+            );
+
+            $categoriesModel->update($category);
+
+            self::$response->redirect('/categories');
+        } catch (Exception $e) {
+            throw new Exception("Error updating category", 400);
+        }
+    }
 }
