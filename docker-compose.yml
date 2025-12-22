@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    container_name: simply-news-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - simply-news-network
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: simply-news-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - simply-news-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: simply-news-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASS}
+    networks:
+      - simply-news-network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  simply-news-network:
+    driver: bridge

@@ -66,11 +66,54 @@ Simply News App/
 
 ### Prerequisites
 
-- PHP 8.0 or higher
-- MySQL/MariaDB
+- PHP 8.0 or higher (8.1 recommended)
+- MySQL 8.0 or higher
 - Git
 
 ### Installation & Setup
+
+#### Option 1: Using Docker (Recommended)
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/LukaszKwiatkowski94/Simply-news-app.git
+   cd Simply-news-app
+   ```
+
+2. **Configure `.env`:**
+
+   ```bash
+   cp example.env .env
+   ```
+
+   Edit `.env` and set:
+
+   ```env
+   DB_HOST=mysql
+   DB_NAME=simplyNewsDB
+   DB_USER=root
+   DB_PASS=password
+   APP_ENV=docker
+   ADMIN_DEFAULT_PASSWORD=ChangeMe123!
+   ```
+
+3. **Start Docker:**
+
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Login to the application:**
+   - App: http://localhost:8080
+   - Default username: `admin`
+   - Default password: `ChangeMe123!`
+   - Database: http://localhost:8081 (PHPMyAdmin)
+   - **⚠️ Change password on first login!** (feature to be implemented)
+
+#### Option 2: Local Development (without Docker - with MySQL)
+
+If you have MySQL installed locally:
 
 1. **Clone the repository:**
 
@@ -81,23 +124,33 @@ Simply News App/
 
 2. **Configure environment variables:**
 
-   - Copy `example.env` to `.env`
-   - Edit `.env` with your database credentials:
-     ```
-     DB_HOST=localhost
-     DB_USER=your_db_user
-     DB_PASSWORD=your_db_password
-     DB_NAME=simply_news
-     DB_PORT=3306
-     ```
+   ```bash
+   cp example.env .env
+   ```
 
-3. **Create database and tables:**
+   Edit `.env`:
 
-   - Import the provided SQL schema:
-     ```bash
-     mysql -u your_db_user -p your_db_name < database.sql
-     ```
-   - Or manually run the SQL commands from the `docs/database.sql` file
+   ```env
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_NAME=simplyNewsDB
+   DB_USER=root
+   DB_PASS=password
+   APP_ENV=development
+   ADMIN_DEFAULT_PASSWORD=ChangeMe123!
+   ```
+
+3. **Initialize database:**
+
+   ```bash
+   php database/init.php
+   ```
+
+   This script will:
+
+   - Create the database
+   - Create all tables
+   - Seed the default admin user with password from `ADMIN_DEFAULT_PASSWORD`
 
 4. **Start the development server:**
 
@@ -105,40 +158,91 @@ Simply News App/
    php -S localhost:8000 index.php
    ```
 
-5. **Access the application:**
-   - Open your browser and navigate to `http://localhost:8000`
-   - Register a new account
-   - Login to explore the app
+5. **Login to the application:**
 
-### First Administrator User
+   - Open http://localhost:8000
+   - Default username: `admin`
+   - Default password: `ChangeMe123!` (from `ADMIN_DEFAULT_PASSWORD`)
+   - **Change password on first login!**
 
-To create an admin user, you need to:
+6. **Login to the application:**
+   - Open http://localhost:8000
+   - Default username: `admin`
+   - Default password: `ChangeMe123!`
+   - **⚠️ Change password on first login!** (feature to be implemented)
 
-1. Create a regular user account via the signup form
-2. Access your database directly and update the user's `is_admin` field:
-   ```sql
-   UPDATE users SET is_admin = 1 WHERE username = 'your_username';
-   ```
+---
+
+## 🔑 First Login & Security
+
+### Default Admin Account
+
+When you first start the application, a default admin user is automatically created:
+
+- **Username:** `admin`
+- **Password:** `ChangeMe123!` (from `ADMIN_DEFAULT_PASSWORD` env variable)
+
+### ⚠️ Important Security Notes
+
+1. **Change Default Password Immediately** (Feature to be implemented)
+
+   - The application should force password change on first login
+   - This prevents unauthorized access to the admin account
+
+2. **Creating Additional Admins**
+
+   - Use the `create-admin.php` script (development environment only)
+   - Script is automatically blocked in production environment
+
+3. **Environment Variables**
+   - Never commit `.env` to version control
+   - Change `ADMIN_DEFAULT_PASSWORD` for production deployments
+   - Use strong passwords in production
 
 ---
 
 ## 🐳 Docker Deployment
 
-Deploy the application easily using Docker:
+### Using Docker Compose
 
-```bash
-docker build -t simply-news-app .
-docker run -p 8000:8000 \
-  -e DB_HOST=mysql \
-  -e DB_USER=root \
-  -e DB_PASSWORD=password \
-  -e DB_NAME=simply_news \
-  simply-news-app
-```
+The easiest way to run the entire application stack (Web + MySQL + PHPMyAdmin):
 
-For production deployments with Docker Compose, see the `docker-compose.yml` file in the repository.
+1. **Configure `.env` file:**
 
----
+   Set `DB_HOST=mysql` in your `.env` file:
+
+   ```env
+   DB_HOST=mysql
+   DB_NAME=simplyNewsDB
+   DB_USER=root
+   DB_PASS=password
+   ```
+
+2. **Start all services:**
+
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Access the application:**
+
+   - **Simply News App:** http://localhost:8080
+   - **PHPMyAdmin:** http://localhost:8081
+   - **MySQL:** localhost:3306
+
+4. **View logs:**
+
+   ```bash
+   docker-compose logs -f web
+   ```
+
+5. **Stop services:**
+
+   ```bash
+   docker-compose down
+   ```
+
+See [DOCKER.md](DOCKER.md) for more detailed Docker documentation and commands.
 
 ## 🔧 Configuration
 
