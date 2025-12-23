@@ -19,17 +19,17 @@ abstract class AbstractController
     protected Request $request;
     protected View $view;
 
-    public static function setConfiguration($configuration): void
-    {
-        self::$configuration = $configuration;
-        AbstractModel::configuration(self::$configuration);
-    }
-
     public function __construct(Request $request)
     {
         $this->request = $request;
         self::$response = new Response;
         self::$user = new User;
         $this->view = new View(self::$user);
+    }
+
+    public static function setConfiguration($configuration): void
+    {
+        self::$configuration = $configuration;
+        AbstractModel::configuration(self::$configuration);
     }
 }

@@ -11,7 +11,7 @@ use PDO;
 final class UserModel extends AbstractModel
 {
 
-    public function create(array $data)
+    public function create(array $data): int|null
     {
         try {
             if (empty($data['username']) || empty($data['password']) || empty($data['name']) || empty($data['surname'])) {
@@ -26,13 +26,18 @@ final class UserModel extends AbstractModel
             $stmt->bindParam(':surname', $data['surname'], PDO::PARAM_STR);
             $stmt->execute();
             $result = $this->connection->lastInsertId();
+            if ($result === 0) {
+                return null;
+            } else {
+                $result = (int)$result;
+            }
             return $result;
         } catch (Exception $e) {
             throw new Exception("User creation error. | Database error.", 400);
         }
     }
 
-    public function get(array $data)
+    public function get(array $data): array
     {
         try {
             $stmt = $this->connection->prepare("SELECT * 
@@ -56,7 +61,7 @@ final class UserModel extends AbstractModel
         }
     }
 
-    public function getUserById(int $id)
+    public function getUserById(int $id): array
     {
         try {
             $stmt = $this->connection->prepare("SELECT id, username, name, surname, is_admin, active 

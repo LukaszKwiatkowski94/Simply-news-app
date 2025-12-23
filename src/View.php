@@ -13,7 +13,7 @@ final class View
         $this->user = new User();
     }
 
-    public function render($page, $params)
+    public function render($page, $params): void
     {
         include_once(__DIR__ . '/../templates/base.php');
     }

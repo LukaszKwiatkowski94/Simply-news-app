@@ -19,7 +19,7 @@ final class CommentsController extends AbstractController
         parent::__construct($request);
     }
 
-    public function getComments($id)
+    public function getComments($id): void
     {
         try {
             $comments = $this->model->getCommentsForNews((int)$id);
