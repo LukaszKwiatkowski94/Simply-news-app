@@ -18,7 +18,7 @@ final class NewsModel extends AbstractModel
     public function createNews(News $news): void
     {
         try {
-            $stmt = $this->connection->prepare("INSERT INTO SN_news(title, content, user_id, category_id) 
+            $stmt = $this->connection->prepare("INSERT INTO " . self::TABLE_NEWS . " (title, content, user_id, category_id) 
                     VALUES(:title, :content, :user_id, :category_id)");
             $stmt->bindParam(':title', $news->getTitle(), PDO::PARAM_STR);
             $stmt->bindParam(':content', $news->getContent(), PDO::PARAM_STR);
@@ -37,7 +37,7 @@ final class NewsModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT id, title, CONCAT(LEFT(content,500),'...') AS content, created_at 
-                    FROM SN_news 
+                    FROM " . self::TABLE_NEWS . " 
                     ORDER BY id desc");
             $stmt->execute();
             $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -65,9 +65,9 @@ final class NewsModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT n.id AS id, n.title, n.created_at, n.updated_at, u.username AS author, c.name AS category 
-                    FROM SN_news AS n
-                    LEFT JOIN SN_users AS u ON n.user_id = u.id
-                    LEFT JOIN SN_categories AS c ON n.category_id = c.id
+                    FROM " . self::TABLE_NEWS . " AS n
+                    LEFT JOIN " . self::TABLE_USERS . " AS u ON n.user_id = u.id
+                    LEFT JOIN " . self::TABLE_CATEGORIES . " AS c ON n.category_id = c.id
                     ORDER BY id desc");
             $stmt->execute();
             $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -99,9 +99,9 @@ final class NewsModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT n.id, n.title, n.content, n.created_at, n.updated_at, u.username AS author, c.name AS category
-                    FROM SN_news as n
-                    LEFT JOIN SN_users AS u ON n.user_id = u.id
-                    LEFT JOIN SN_categories AS c ON n.category_id = c.id
+                    FROM " . self::TABLE_NEWS . " as n
+                    LEFT JOIN " . self::TABLE_USERS . " AS u ON n.user_id = u.id
+                    LEFT JOIN " . self::TABLE_CATEGORIES . " AS c ON n.category_id = c.id
                     WHERE n.id=:id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -130,7 +130,7 @@ final class NewsModel extends AbstractModel
     public function delete(int $id): void
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM SN_news WHERE id=:id");
+            $stmt = $this->connection->prepare("DELETE FROM " . self::TABLE_NEWS . " WHERE id=:id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -145,7 +145,7 @@ final class NewsModel extends AbstractModel
     public function edit(News $news): void
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE SN_news
+            $stmt = $this->connection->prepare("UPDATE " . self::TABLE_NEWS . "
                       SET title = :title,
                           content = :content
                       WHERE id = :id");

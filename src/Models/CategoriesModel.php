@@ -10,7 +10,7 @@ final class CategoriesModel extends AbstractModel
 {
     public function list(): array
     {
-        $stmt = $this->connection->prepare("SELECT * FROM SN_categories");
+        $stmt = $this->connection->prepare("SELECT * FROM " . self::TABLE_CATEGORIES);
         $stmt->execute();
         $categories = [];
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $category) {
@@ -25,14 +25,14 @@ final class CategoriesModel extends AbstractModel
 
     public function create(string $name): void
     {
-        $stmt = $this->connection->prepare("INSERT INTO SN_categories(name) VALUES(:name)");
+        $stmt = $this->connection->prepare("INSERT INTO " . self::TABLE_CATEGORIES . " (name) VALUES(:name)");
         $stmt->bindParam(':name', $name);
         $stmt->execute();
     }
 
     public function update(Category $category): void
     {
-        $stmt = $this->connection->prepare("UPDATE SN_categories SET name=:name, is_active=:is_active WHERE id=:id");
+        $stmt = $this->connection->prepare("UPDATE " . self::TABLE_CATEGORIES . " SET name=:name, is_active=:is_active WHERE id=:id");
         $stmt->bindParam(':name', $category->getName());
         $stmt->bindParam(':is_active', $category->isActive(), \PDO::PARAM_BOOL);
         $stmt->bindParam(':id', $category->getId(), \PDO::PARAM_INT);

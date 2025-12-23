@@ -17,7 +17,7 @@ final class UserModel extends AbstractModel
             if (empty($data['username']) || empty($data['password']) || empty($data['name']) || empty($data['surname'])) {
                 throw new Exception("Incomplete user creation data. | Database error.", 400);
             }
-            $stmt = $this->connection->prepare("INSERT INTO SN_users(username, password, name, surname) 
+            $stmt = $this->connection->prepare("INSERT INTO " . self::TABLE_USERS . " (username, password, name, surname) 
                     VALUES(:username, :password, :name, :surname)");
             $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -41,7 +41,7 @@ final class UserModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT * 
-                    FROM SN_users 
+                    FROM " . self::TABLE_USERS . " 
                     WHERE username = :username");
             $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
             $stmt->execute();
@@ -65,7 +65,7 @@ final class UserModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT id, username, name, surname, is_admin, active 
-                    FROM SN_users 
+                    FROM " . self::TABLE_USERS . " 
                     WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
