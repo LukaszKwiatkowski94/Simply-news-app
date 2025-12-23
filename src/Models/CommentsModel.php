@@ -15,7 +15,7 @@ final class CommentsModel extends AbstractModel
     {
         try {
 
-            $stmt = $this->connection->prepare("INSERT INTO SN_comments(newsID, authorID, content, date_created) 
+            $stmt = $this->connection->prepare("INSERT INTO " . self::TABLE_COMMENTS . " (newsID, authorID, content, date_created) 
                     VALUES(:newsID, :authorID, :content, now())");
             $stmt->bindParam(':newsID', $comment->getNewsID(), PDO::PARAM_INT);
             $stmt->bindParam(':authorID', $comment->getAuthorID(), PDO::PARAM_INT);
@@ -31,7 +31,7 @@ final class CommentsModel extends AbstractModel
     {
         try {
             $stmt = $this->connection->prepare("SELECT c.id, u.id as authorID, u.username as author, c.content, c.date_created 
-                    FROM SN_comments c JOIN SN_users u ON c.authorID = u.id
+                    FROM " . self::TABLE_COMMENTS . " c JOIN " . self::TABLE_USERS . " u ON c.authorID = u.id
                     WHERE newsID=:newsID");
             $stmt->bindParam(':newsID', $id, PDO::PARAM_INT);
             $stmt->execute();
