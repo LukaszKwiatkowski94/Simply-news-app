@@ -2,7 +2,7 @@
 
 > **A modern, framework-free PHP news portal** built with clean architecture, custom routing, and real-world functionality. Perfect for learning modern PHP development patterns or deploying as a lightweight news management system.
 
-[![PHP Version](https://img.shields.io/badge/PHP-8.0+-blue)](https://www.php.net/)
+[![PHP Version](https://img.shields.io/badge/PHP-8.1+-blue)](https://www.php.net/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-LukaszKwiatkowski94-lightgrey)](https://github.com/LukaszKwiatkowski94/Simply-news-app)
 
@@ -49,6 +49,9 @@ Simply News App/
 │   ├── configuration.php      # App settings
 │   ├── database.php           # DB configuration
 │   └── env.php                # Environment variables
+├── 📁 database/               # Database initialization
+│   ├── init.php               # Database setup script
+│   └── schema.sql             # Schema reference
 ├── 📁 templates/              # View files (MVC templates)
 │   └── pages/                 # Page-specific templates
 ├── 📁 public/                 # Frontend assets
@@ -56,6 +59,9 @@ Simply News App/
 │   ├── js/                    # Client-side scripts
 │   ├── img/                   # Images
 │   └── icon/                  # Icons & favicons
+├── 📄 docker-entrypoint.sh    # Docker startup script
+├── 📄 Dockerfile              # Docker image definition
+├── 📄 docker-compose.yml      # Multi-container setup
 ├── 📄 index.php               # Application entry point
 └── 📄 .env                    # Environment variables
 ```
@@ -66,8 +72,9 @@ Simply News App/
 
 ### Prerequisites
 
-- PHP 8.0 or higher (8.1 recommended)
+- PHP 8.1 or higher
 - MySQL 8.0 or higher
+- Docker & Docker Compose (for Docker deployment)
 - Git
 
 ### Installation & Setup
@@ -91,7 +98,7 @@ Simply News App/
 
    ```env
    DB_HOST=mysql
-   DB_NAME=simplyNewsDB
+   DB_NAME=adzintsxsi_miniProject
    DB_USER=root
    DB_PASS=password
    APP_ENV=docker
@@ -104,12 +111,18 @@ Simply News App/
    docker-compose up -d
    ```
 
-4. **Login to the application:**
-   - App: http://localhost:8080
-   - Default username: `admin`
-   - Default password: `ChangeMe123!`
-   - Database: http://localhost:8081 (PHPMyAdmin)
-   - **⚠️ Change password on first login!** (feature to be implemented)
+   The startup process handles everything automatically:
+
+   - MySQL container starts and waits for readiness
+   - Web container runs `docker-entrypoint.sh`
+   - `php database/init.php` creates database, tables, and admin user
+   - Apache starts and app is ready
+
+4. **Access the application:**
+   - **Web App:** http://localhost:8080
+   - **PHPMyAdmin:** http://localhost:8081
+   - **Default login:** `admin` / `ChangeMe123!`
+   - **⚠️ Change password immediately!** (feature to be implemented)
 
 #### Option 2: Local Development (without Docker - with MySQL)
 
@@ -158,18 +171,10 @@ If you have MySQL installed locally:
    php -S localhost:8000 index.php
    ```
 
-5. **Login to the application:**
-
+5. **Access the application:**
    - Open http://localhost:8000
-   - Default username: `admin`
-   - Default password: `ChangeMe123!` (from `ADMIN_DEFAULT_PASSWORD`)
-   - **Change password on first login!**
-
-6. **Login to the application:**
-   - Open http://localhost:8000
-   - Default username: `admin`
-   - Default password: `ChangeMe123!`
-   - **⚠️ Change password on first login!** (feature to be implemented)
+   - Default login: `admin` / `ChangeMe123!`
+   - **⚠️ Change password immediately!**
 
 ---
 
@@ -184,20 +189,32 @@ When you first start the application, a default admin user is automatically crea
 
 ### ⚠️ Important Security Notes
 
-1. **Change Default Password Immediately** (Feature to be implemented)
+1. **Change Default Password Immediately**
 
-   - The application should force password change on first login
-   - This prevents unauthorized access to the admin account
+   - The default password is `ChangeMe123!` from `ADMIN_DEFAULT_PASSWORD` env variable
+   - **TODO:** Application should force password change on first login
+   - Change it via user profile or database:
+     ```bash
+     php -r "echo password_hash('NewPassword', PASSWORD_DEFAULT);"
+     # Then update in database via PHPMyAdmin or MySQL CLI
+     ```
 
-2. **Creating Additional Admins**
+2. **Creating Additional Admin Users**
 
-   - Use the `create-admin.php` script (development environment only)
-   - Script is automatically blocked in production environment
+   - Create regular users via signup page
+   - Grant admin privileges via database:
+     ```sql
+     UPDATE SN_users SET is_admin = 1 WHERE username = 'username';
+     ```
+   - Or modify `database/init.php` before first run
 
-3. **Environment Variables**
+3. **Production Deployment**
+
+   - Set `APP_ENV=production` to block init.php execution
+   - Initialize database manually before deployment
+   - Change `ADMIN_DEFAULT_PASSWORD` to a strong, unique password
    - Never commit `.env` to version control
-   - Change `ADMIN_DEFAULT_PASSWORD` for production deployments
-   - Use strong passwords in production
+   - Use environment-specific configurations
 
 ---
 
@@ -209,13 +226,19 @@ The easiest way to run the entire application stack (Web + MySQL + PHPMyAdmin):
 
 1. **Configure `.env` file:**
 
-   Set `DB_HOST=mysql` in your `.env` file:
+   ```bash
+   cp example.env .env
+   ```
+
+   Edit `.env`:
 
    ```env
    DB_HOST=mysql
    DB_NAME=simplyNewsDB
    DB_USER=root
    DB_PASS=password
+   APP_ENV=docker
+   ADMIN_DEFAULT_PASSWORD=ChangeMe123!
    ```
 
 2. **Start all services:**
@@ -224,22 +247,41 @@ The easiest way to run the entire application stack (Web + MySQL + PHPMyAdmin):
    docker-compose up -d
    ```
 
+   **What happens on startup:**
+
+   - MySQL container initializes
+   - Web container runs `docker-entrypoint.sh`:
+     - Waits for MySQL health check
+     - Executes `php database/init.php`
+     - Creates database and tables
+     - Seeds admin user with `ADMIN_DEFAULT_PASSWORD`
+     - Starts Apache
+
 3. **Access the application:**
 
    - **Simply News App:** http://localhost:8080
    - **PHPMyAdmin:** http://localhost:8081
    - **MySQL:** localhost:3306
+   - **Default login:** `admin` / `ChangeMe123!`
 
-4. **View logs:**
+4. **View initialization logs:**
 
    ```bash
-   docker-compose logs -f web
+   docker-compose logs web
    ```
+
+   Look for "🚀 Simply News App - Database Initialization" section.
 
 5. **Stop services:**
 
    ```bash
    docker-compose down
+   ```
+
+6. **Rebuild after changes:**
+
+   ```bash
+   docker-compose up -d --build
    ```
 
 See [DOCKER.md](DOCKER.md) for more detailed Docker documentation and commands.
@@ -251,14 +293,14 @@ All sensitive configuration is managed through environment variables in the `.en
 ```env
 # Database Configuration
 DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=simply_news
 DB_PORT=3306
+DB_NAME=simplyNewsDB
+DB_USER=root
+DB_PASS=your_password
 
 # Application Settings
-APP_DEBUG=true
 APP_ENV=development
+ADMIN_DEFAULT_PASSWORD=ChangeMe123!
 ```
 
 > ⚠️ **Security Note**: Never commit your `.env` file to version control. It's listed in `.gitignore` for your protection.
