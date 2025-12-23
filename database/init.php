@@ -35,6 +35,12 @@ foreach ($lines as $line) {
     list($name, $value) = explode('=', $line, 2);
     $name = trim($name);
     $value = trim($value);
+    // Remove surrounding quotes if present
+    if ((strpos($value, '"') === 0 && strrpos($value, '"') === strlen($value) - 1) ||
+        (strpos($value, "'") === 0 && strrpos($value, "'") === strlen($value) - 1)
+    ) {
+        $value = substr($value, 1, -1);
+    }
     $env[$name] = $value;
 }
 
