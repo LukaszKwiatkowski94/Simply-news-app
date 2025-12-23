@@ -98,7 +98,7 @@ Simply News App/
 
    ```env
    DB_HOST=mysql
-   DB_NAME=adzintsxsi_miniProject
+   DB_NAME=simplyNewsDB
    DB_USER=root
    DB_PASS=password
    APP_ENV=docker
@@ -311,7 +311,7 @@ ADMIN_DEFAULT_PASSWORD=ChangeMe123!
 
 | Technology             | Purpose                | Why It's Great                                      |
 | ---------------------- | ---------------------- | --------------------------------------------------- |
-| **PHP 8.0+**           | Backend logic          | Type hints, match expressions, nullsafe operators   |
+| **PHP 8.1+**           | Backend logic          | Type hints, match expressions, nullsafe operators   |
 | **MySQL/MariaDB**      | Data persistence       | Reliable, scalable database                         |
 | **PDO**                | Database abstraction   | Secure, parameterized queries prevent SQL injection |
 | **Vanilla JavaScript** | Frontend interactivity | No heavy dependencies, lightweight                  |
