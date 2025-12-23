@@ -21,7 +21,7 @@ This project includes complete Docker support for both development and productio
 
    ```env
    DB_HOST=mysql
-   DB_NAME=adzintsxsi_miniProject
+   DB_NAME=simplyNewsDB
    DB_USER=root
    DB_PASS=password
    APP_ENV=docker
@@ -72,7 +72,7 @@ If you don't use Docker but have MySQL installed locally:
    ```env
    DB_HOST=localhost
    DB_PORT=3306
-   DB_NAME=adzintsxsi_miniProject
+   DB_NAME=simplyNewsDB
    DB_USER=root
    DB_PASS=password
    APP_ENV=development
@@ -137,7 +137,7 @@ All database settings are read from your `.env` file:
 ```env
 DB_HOST=mysql                          # Service name in docker-compose
 DB_PORT=3306
-DB_NAME=adzintsxsi_miniProject
+DB_NAME=simplyNewsDB
 DB_USER=root
 DB_PASS=password                       # MySQL root password
 APP_ENV=docker                         # Set to 'development' or 'docker', blocks init in production
@@ -171,7 +171,7 @@ docker-compose logs -f mysql
 
 ```bash
 docker-compose exec web php -v
-docker-compose exec mysql mysql -u root -p adzintsxsi_miniProject
+docker-compose exec mysql mysql -u root -p simplyNewsDB
 ```
 
 ### Rebuild Image
@@ -289,7 +289,7 @@ To change the default password hash in the database manually:
 php -r "echo password_hash('YourNewPassword', PASSWORD_DEFAULT);"
 
 # 2. Connect to database via PHPMyAdmin or MySQL CLI
-mysql -u root -p adzintsxsi_miniProject
+mysql -u root -p simplyNewsDB
 
 # 3. Update password
 UPDATE SN_users SET password = '$2y$10$...' WHERE username = 'admin';
@@ -301,10 +301,10 @@ Persistent MySQL data is stored in Docker volume `mysql_data`. To backup:
 
 ```bash
 # Backup database
-docker-compose exec mysql mysqldump -u root -p adzintsxsi_miniProject > backup.sql
+docker-compose exec mysql mysqldump -u root -p simplyNewsDB > backup.sql
 
 # Restore database
-docker-compose exec -T mysql mysql -u root -p adzintsxsi_miniProject < backup.sql
+docker-compose exec -T mysql mysql -u root -p simplyNewsDB < backup.sql
 ```
 
 ## Development
