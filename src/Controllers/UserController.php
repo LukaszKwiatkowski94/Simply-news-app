@@ -9,6 +9,11 @@ use APP\Controllers\AbstractController;
 use APP\Models\UserModel;
 use Exception;
 
+/**
+ * Class UserController
+ *
+ * @package APP\Controllers
+ */
 final class UserController extends AbstractController
 {
     private UserModel $model;
