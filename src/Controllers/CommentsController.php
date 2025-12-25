@@ -9,6 +9,11 @@ use APP\Controllers\AbstractController;
 use APP\Models\CommentsModel;
 use Exception;
 
+/**
+ * Class CommentsController
+ *
+ * @package APP\Controllers
+ */
 final class CommentsController extends AbstractController
 {
     private CommentsModel $model;

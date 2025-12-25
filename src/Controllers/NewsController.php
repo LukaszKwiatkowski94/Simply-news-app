@@ -9,6 +9,11 @@ use APP\Controllers\AbstractController;
 use APP\Models\NewsModel;
 use Exception;
 
+/**
+ * Class NewsController
+ *
+ * @package APP\Controllers
+ */
 final class NewsController extends AbstractController
 {
     private NewsModel $model;
