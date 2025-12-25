@@ -7,6 +7,11 @@ namespace APP\Controllers;
 use APP\Controllers\AbstractController;
 use APP\View;
 
+/**
+ * Class ErrorController
+ *
+ * @package APP\Controllers
+ */
 final class ErrorController extends AbstractController
 {
     private string $message;
