@@ -7,6 +7,11 @@ namespace APP\Models;
 use Exception;
 use PDO;
 
+/**
+ * Class AbstractModel
+ *
+ * @package APP\Models
+ */
 abstract class AbstractModel
 {
     protected PDO $connection;
