@@ -75,4 +75,61 @@ final class UserController extends AbstractController
             self::$response->redirect('/');
         }
     }
+
+    /**
+     * User account profile page
+     */
+    public function account(): void
+    {
+        if (!self::$user->isLoggedIn()) {
+            self::$response->redirect('/login');
+            return;
+        }
+
+        $params['header'] = 'My Account';
+        $params['page'] = 'user/account';
+        $params['user'] = self::$user->getUserInfo();
+
+        $this->view->render('base', $params);
+    }
+
+    /**
+     * Change user password
+     */
+    public function changePassword(): void
+    {
+        if (!self::$user->isLoggedIn()) {
+            self::$response->redirect('/login');
+            return;
+        }
+
+        if (!empty($this->request->getRequestPost())) {
+            $data = $this->request->getRequestPost();
+
+            if (empty($data['oldPassword']) || empty($data['newPassword']) || empty($data['confirmPassword'])) {
+                throw new Exception("All fields are required.", 400);
+            }
+
+            if ($data['newPassword'] !== $data['confirmPassword']) {
+                throw new Exception("New passwords do not match.", 400);
+            }
+
+            if (strlen($data['newPassword']) < 6) {
+                throw new Exception("Password must be at least 6 characters long.", 400);
+            }
+
+            try {
+                $userId = self::$user->getUserId();
+                $this->model->changePassword($userId, $data['oldPassword'], $data['newPassword']);
+                self::$response->redirect('/account?success=password_changed');
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage(), 400);
+            }
+        } else {
+            $params['header'] = 'Change Password';
+            $params['page'] = 'user/change-password';
+
+            $this->view->render('base', $params);
+        }
+    }
 }
