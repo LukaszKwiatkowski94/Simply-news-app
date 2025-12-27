@@ -75,4 +75,30 @@ final class UserModel extends AbstractModel
             throw new Exception("Error while fetching user by ID. | Database error.", 400);
         }
     }
+
+    public function changePassword(int $userId, string $oldPassword, string $newPassword): bool
+    {
+        try {
+            // Get current user password
+            $stmt = $this->connection->prepare("SELECT password FROM " . self::TABLE_USERS . " WHERE id = :id");
+            $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user || !password_verify($oldPassword, $user['password'])) {
+                throw new Exception("Current password is incorrect.", 400);
+            }
+
+            // Update password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt = $this->connection->prepare("UPDATE " . self::TABLE_USERS . " 
+                    SET password = :password 
+                    WHERE id = :id");
+            $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            throw new Exception("Error changing password. | Database error.", 400);
+        }
+    }
 }
